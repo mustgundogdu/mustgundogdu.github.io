@@ -1,0 +1,398 @@
+<!Doctype html>
+<html>
+	<title>NTLM RELAY LLMNR POISONING</title>
+	<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                    <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>NTLM RELAY VE LLMNR POISONING</h1>
+		
+			<h2>NTLMv2 AUTHENTICATION</h2>
+			<br></br>
+			<img src="/img2/ntlm_auth.png" align="middle" width="800px" height="500px">
+			<p>
+			 Başlangıç aşamasında girdi olarak alınan kullanıcı adının yanında parola bir hash ile şifrelenir ve artık parola iletimi hash biçeminde doğrulama da kullanılır.
+
+			
+			</p>
+			<br></br>
+			<h4>
+			AUTHENTICATION REQUEST  (1)
+			</h4>
+
+			<p>
+			Alınan girdilerden sonra kullanıcı windows sunucuya doğrulama isteğinde bulunur.
+			</p>
+
+			<h4>
+			SEND NTLM CHALLENGE  (2)
+			</h4>
+			<p>
+			 Bu isteğin ardından windows sunucu kullanıcıya bir challenge hash veya nonce hash değeri gönderiri bu gönderilen hash değeri 8 byte uzunluğundadır.
+<pre>
+SC = 8-byte server challenge, random
+(Server Challenge)
+</pre>
+			</p>
+
+			<h4>
+			USERNAME + CLIENT RESPONSE HASH + SERVER CHALLENGE (3)
+			</h4>
+
+			<p>
+			  Gelen hash değerini alan kullanıcı ise bu değeri aşağıdaki formatta ki gibi geri gönderir.
+			</p>
+			<pre>
+			
+		SC = 8-byte server challenge, random 
+		(Server Challenge)
+		CC = 8-byte client challenge, random
+		(Client Challenge)
+		CC* = (X, time , CC2, domain name)
+		v2-Hash = HMAC-MD5(NT-Hash, username, domain name)
+		LMv2 = HMAC-MD5 (v2-Hash, SC, CC)
+		NTv2 = HMAC-MD5(v2-Hash, SC, CC*)
+		Response = Lmv2 | CC | Ntv2 | CC*
+			</pre>
+
+			<p>
+			Bu yapıyı sırası ile incelediğimizde ilk olarak server tarafından gönderilen server challenge hash değerini görüyoruz.
+Bu na yanıt olarak kullanıcı 8 byte uzunluğunda client challenge rastgele bir şekilde üretir.  
+
+			
+			</p>
+
+	<h4>USERNAME+ RESPONSE HASH + SERVER CHALLENGE (4)</h4>
+
+	<p>
+	Ardından bu değerleri sunucu active directory ortamında ki kullanıcı nesneleri , grupları ve grup üyeliği hakkındaki bilgiler dahil olmak üzere Active Directory verilerini depolayan bir veritabanı olan ‘ntds.dit’ dosyasında sorgular.
+	</p>
+
+	<br></br>
+	<h4>AUTHENTICATE REPLY (5)</h4>
+
+	<p>  Son olarak sorgulama işleminden sonra doğrulama işlemini gerçekleştirir. Eğer gönderilen değerler Belirtilen NTDS.dit dosyasında mevcut ise oturum başlatılır.</p>
+
+	<p> Bir Active Directory Domain yapısından söz edilmez ise NTLMv2 Doğrulamayı nasıl gerçekleştirir bunun için aşağıdaki şemadan yola çıkalım.</p>
+
+
+	 <img src="/img2/ad_domain.png" align="middle" width="800px" height="500px">
+
+
+	 <br></br>
+
+	 <h4>AUTHENTICATION REQUEST  (1)</h4>
+
+	 <p>
+	 İlk olarak kullanıcı  oturum için yine DC ortamında olduğu gibi bir doğrulama isteğinde bulunur.
+	 </p>
+	
+	 <br></br>
+
+	 <h4>SEND NTLM CHALLENGE (2)</h4>
+	 <p>Bu isteği alan sunucu kullanıcıya 8-byte uzunluğunda rastgele üretilen bir challenge hash gönderir.</p>
+
+	 <br></br>
+	 <h4>USERNAME+CLIENT CHALLENGE+SERVER CHALLENGE (3)</h4>
+	 <p>Ardından Sunucu tarafından gönderilen challenge değerini alan kullanıcı active directory ortamında olduğu gibi çözümler ve sunucu üzerinde</p>
+
+	 <br></br>
+	 <h4>AUTHENTICATION REPLY (4)</h4>
+	 <p>
+	   Sunucu kullanıcıdan aldığı ntlmv2 protokol cevabını SAM (SECURITY ACCOUNT MANAGER) dosyasında sorgular bu dosya windows sistem üzerinde (%SystemRoot%/system32/config/SAM) yolunda tutulur. Eğer bu dosya içinde tutulan değerler doğru ise oturum başlatılır.
+	 
+	 </p>
+
+	 <pre>
+	 
+	Sunucudan kullanıcıya giden challenge hash formatı özellikleri aşağıdaki gibidir.
+
+    	• 1122334455667788
+
+ 	Kullanıcıdan alınan ve sunucuya challenge hash cevabı olarak gönderilen NTLMV2 cevap formatı aşağıdaki gibidir.
+
+	faruk::CLIENT:08ca45b7d7ea58ee:88dcbe4446168966a153a0064958dac6:5c7830315c7830310000000000000b45c67103d07d7b95acd12ffa11230e0000000052920b85f78d013c31cdb3b92f5d765c783030
+	 
+	 </pre>
+
+	 <pre>
+	 
+	       
+	    • username::
+		Bu alanda doğrulama yapmak isteyen kullanıcının kullanıcı adı yer alır .
+
+    	    • DomainName_or_Workgroup:
+		Bu alanda ise kullanıcının dahil olduğu Active Directory domain ismi veya eğer kullanıcı bir 
+Domain ortamı kullanmıyor ise Workgroup ismi eklenir.
+	
+    	    • Server_random_hash:
+      		Bu alanda ise sunucudan alınan ve rastgele üretilen sunucu hash challenge değeri yer alır.
+
+    	    • Client_Random_hash:
+		Bu alanda ise sunucunun gönderdiği challenge hash değerine karşın kullanıcı tarafından üretilen hash değeri vardır.
+	
+    	    • NTLM_Response
+      		Bu alanda ise parola hash eklenir ve NTLM versiyonuna göre şifrelenme biçemi farklılık gösterir NTLMV2 de HMAC-MD5 biçeminde şifreleme gerçekleştirilir.
+
+	 
+	 
+	 
+	 </pre>
+
+
+	 <br></br>
+
+	 <h3>NTLM RELAYING</h3>
+
+	 <p>
+	 Ntlm servisinin nasıl doğrulama yaptığını anladık şimdi bu doğrulamayı kötüye kullanıp istismar edelim bunun için NTLM Relay saldırısının temeline bakalım ve bu işlemin nasıl gerçekleştiğini kavrayalım.
+Bu durumu kavramak için aşağıdaki görsel faydalı olucaktır.
+	 
+	 </p>
+	 <br></br>
+	 <img src="/img2/ntlm_relay.png" align="middle" width="800px" height="500px">
+
+	 <br></br>
+	<p>  Yukarıda anlatılan NTLMv2 bir Domain yapısında ki doğrulama işlemleri gerçekleşirken saldırganın bu işlemleri yönlendirip istediği hash bilgilerini alması gibi kısa bir açıklama yaparak başlayalım.</p>
+
+	<p>
+	   İlk olarak saldırgan ağ içerisinde sunucu ve kullanıcı’nın arasına girmek için bir man in the mittle veya arp spoofing saldırısı ile bu durumu gerçekleştirir.
+Gerçekleştirilen bu saldırıdan sonra saldırgan smb sunucusu da dahil olmak üzere birçok sunucu çalıştırmak ve bunu kurban makina olan kullanıcıya aktarmak için impacket içerisinde yer alan ntlmrelayx.py programını çalıştırır.
+	</p>
+
+	<p>
+	
+   Ardından Responder aracını çalıştırarak kurbana sahte yanıtlar gönderir ve bu  sayede kurbandan istediği Ntlm hash değerini alır.Hadi bunu uygulamada gerçekleştirip wireshark aracı ile paketleri yakaladıktan sonra incelemesini gerçekleştirelim. Bu uygulamamızda senaryo aşağıdaki gibi bir 
+topolojide işliyor.
+	
+	</p>
+	<br></br>
+	<img src="/img2/ntlm_relay1.png" align="middle" width="800px" height="500px">
+	<br></br>
+
+	<p>  Topolojide cihazlarımızın ne olduğunu işlemlerin nasıl gerçekleşeceğini yukarıdaki saldırı mantığı ile anlatalım.
+</p>
+
+<p>
+ Başlangıç aşamasında arpspoof aracımız ile arpspoofing saldırısını başlatıp sunucu ile kullanıcı arasına girip ağ paketlerini üzerimizden geçmesine olanak tanıyoruz.
+
+</p>
+<br></br>
+ <img src="/img2/ntlm_relay2.png" align="middle" width="800px" height="500px">
+
+ <br></br>
+ <p>   Bu işlemin ardından ‘impacket’ içerisinde bulunan ntlmrelayx.py programını -t parametresi ile çalıştırıp hedef olarak kullanıcı ipv4 adresini ekliyoruz bu program sayesinde smb sunucusu da dahil olmak üzere kali makinamızda bir sunucu gibi davranabileceğiz ve hedef kullanıcı’nın doğrulama isteklerini üzerimize çekebileceğiz.</p>
+
+ <br></br>
+ <img src="/img2/ntlm_relay3.png" align="middle" width="800px" height="500px">
+
+ <br></br>
+
+ <p>
+   Yukarıdaki ekran görüntüsünde görüldüğü üzere program başlatıldığında bir sunucu gibi davranabilmesi için birçok servis başlatıldı.
+ </p>
+
+ <p>
+  Bunun ardından kendimizi bir sunucu gibi gösterebilmemiz için aynı zamanda gelen isteklerin ne olduğuna ve nasıl cevap verilmesi gerektiği de gereklidir.
+Bu açıdan Responder aracını kullanmak bize büyük fayda sağlayacaktır.Kullanıcı arpspoof saldırısından ötürü artık bizi hedef suucu olarak gördüğünden NTLM sorgularını bize döndürecektir ve bizde ona Responder tarafından oluşturulmuş challenge değerini gönderip buna karşı gelen kullanıcı adı ve parola hash değerini ele geçiriceğiz .
+Responder aracımızı aşağıdaki ekran görüntüsünde ki gibi başlatıyoruz.
+<pre>
+$ sudo python Responder.py -I eth0 -v
+</pre>
+ </p>
+
+ <br></br>
+
+ <img src="/img2/ntlm_relay4.png" align="middle" width="800px" height="400px">
+ <br></br>
+ <p> Artık herşey hazır olduğuna göre tek yapmamız gereken kullanıcı’nın doğrulama yapmasını beklemek.Biraz bekleme işleminden sonra aşağıdaki ekran görüntüsünde gösterildiği gibi Kullanıcının NTLM cevabına ulaştık ve Responder ona doğrulama’nın geçersiz olduğunu gönderdi.</p>
+
+ <br></br>
+
+ <img src="/img2/ntlm_relay5.png" align="middle" width="800px" height="400px">
+
+ <br></br>
+
+ <p> Şimdi bu işlemler ağ içerisinde nasıl gerçekleşti wireshark aracımız ile filtreleme yaparak inceleyelim ardından yorumlayalım.</p>
+
+ <p>
+ Aşağıdaki ekran görüntüsünde yakalanan paketlere baktığımızda ilk olarak yukarıda saldırı ‘nın nasıl gerçekleştiğini anlattığımız kısa anlatımda ilk durumla karşılaşıyoruz yani kullanıcı saldırgana bir doğrulama talebinde bulunuyor .
+Wireshark ta bu paketi hızlı bir lekilde elde etmek için aşağıdaki filtrelemeyi kullanabilirsiniz.
+ </p>
+
+ <pre>
+ [ip.src_host == 192.168.235.131 && smb]
+ </pre>
+
+ <img src="/img2/ntlm_relay6.png" align="middle" width="800px" height="110px">
+ <br></br>
+
+ <p>Ardından saldırgan makinanın yukarıdaki kullanıcının isteğine nasıl cevap verdiğine bakmak istediğimizde aşağıdaki filtreleme ile seçilen paketi görüyoruz.</p>
+ <pre>
+ [ip.src_host == 192.168.235.142 && smb]
+ 
+ </pre>
+
+ <img src="/img2/ntlm_relay7.png" align="middle" width="800px" height="110px">
+
+ <br></br>
+ <p>
+ Seçilen paketi incelediğimiz de aşağıdaki ekran görüntüsündeki gibi Responder tarafından oluşturulan challenge değerini ‘nin gönderildiğini görüyoruz.
+ </p>
+
+<img src="/img2/ntlm_relay8.png" align="middle" width="800px" height="110px">
+
+<br></br>
+
+<p>
+Ardından kullanıcınının parolasının hash değerinin tutulduğu Ntlm doğrulama paketini incelemek için aşağıdaki ekran görüntüsünde ki gibi
+<pre>[ip.src_host == 192.168.235.131 && ip.dst_host == 192.168.235.142 && ntlmssp] filtresini kullanıyoruz.
+</pre>
+</p>
+
+<br></br>
+
+<img src="/img2/ntlm_relay9.png" align="middle" width="800px" height="110px">
+
+<br></br>
+
+<p>
+Seçilen paket incelendiğinde aşağıdaki gibi Responder da yakaladığımız hash değerini görebiliyoruz.
+</p>
+
+<br></br>
+
+<img src="/img2/ntlm_relay10.png" align="middle" width="800px" height="300px">
+
+<br></br>
+
+<h3>LLMNR/NBT-NS POISONING</h3>
+
+<p>
+Bu saldırıyı anlamak için öncelikle LLMNR Protokolünün nasıl çalıştığını anlamamız ve bu çalışma’nın temelinde neler olup bittiğini bilmemiz gerekmektedir.
+</p>
+
+<p>
+LLMNR servisi ağ içerisinde DNS çözümlemesi yapan sunucunun zarar görmesi veya kullanılamaması gibi durumlarda devreye giren ve bu servis sayesinde ağ içerisindeki komşu cihazlara sorgulama gerçekleştiren ana makina isim adresi çözümlenir.
+</p>
+
+
+<p>
+Bu işlem aslında ağ içerisindeki bir saldırgan için gayet basit bir mantıkla sorgulanan ismin kendisi olduğunu söyleyerek NTLM doğrulaması gibi için kullanıcı tarafından gönderilen bilgileri ele geçirir.
+</p>
+<br></br>
+<img src="/img2/llmnr.png" align="middle" width="800px" height="600px">
+
+<br></br>
+
+<p>
+Yukarıdaki saldırı topolojisini açıklarsak başlangıçta kullanıcı ağ içerisindeki DNS sunucu’da sorgu adı’nın adres çözümlemesini ister fakat zarar görmiş veya bu sorgu için cevap veremeyen bir dns sunucusu kullanıcıyı LLMNR Protokolünü kullanmaya zorlar.
+</p>
+
+<p>
+
+Ardından kullanıcı tüm ağ içerisinde LLMNR protokolü kullanarak bir broadcast sorgusu gerçekleştirir(LLMNR Veya NBT-NS Broadcast yayını UDP/5355, UDP/137 numaralı portlardan gerçekleştirilir. )
+</p>
+
+<p>
+  Bu yayını bahsedilen portlardan dinleyen saldırgan kendisini sorgu yapılan isim olarak gösterir ve sonra kullanıcı artık çözümlemesini istediği isim için bir doğrulama yapmak için saldırgana istek gönderir saldırgan yukarıda anlatılan NTLM doğrulama mekanizmasını kullanarak kullanıcı’nın kritik hash bilgilerini ele geçirir.
+</p>
+
+<p>
+Bu durumdan aslında farklı olmayarak hatalı yazılan bağlantı dizin ya da dosyalar sonucunda kulllanıcı ağ içerisindeki yukarıda bahsi geçen LLMNR sorgu durumunu gerçekleştirecektir.
+Ve Sonuç olarak yine saldırganın tuzağına düşerek doğrulama hash değeri ele geçirilir.
+Şimdi Bu saldırıyı uygulamalı bir şekilde gösterelim.
+</p>
+
+<p>
+Başlangıç olarak   Responder aracımızı başlatıyoruz bu sayede istenen ana bilgisayar adı için kendi adresimizi verip doğrulama bilgilerini elde ediceğiz.
+
+</p>
+<br></br>
+
+<img src="/img2/llmnr1.png" align="middle" width="800px" height="500px">
+
+<br></br>
+<p>
+Ardından ağ ortamında NBT-NS sorgusu gerçekleştirecek olan kullanıcıyı bekliyoruz ve kullanıcı tam da istediğimiz gibi yanlış bir arama gerçekleştirdi ve ağda kullanılan DNS sunucusu bu adın kendisinde mevcut olmadığını cevap dönderdi ardından ağ içerisinde kullanıcı NBT-NS sorgusunu yaptı ve bu sorguyu bekleyen Responder aracı saldırganımızın kali cihazı ile aranan adresin kendisinde olduğunu ileterek doğrulama mekanizması için kritik bilgileri elde ederek kullanıcıya hata messajı olarak geri dönderdi.
+</p>
+
+<br></br>
+
+<img src="/img2/llmnr2.png" align="middle" width="800px" height="200px">
+
+
+<p>
+ Ardından yukarıdaki ekran görüntüsündeki gibi kullanıcının hash bilgileri elde edildi.Bu durumun ağ içerisinde wireshark aracı ile incelediğimiz de aşağıdaki analizden söz etmemiz mümkündür.
+
+</p>
+
+<p>
+
+Aşağıdaki gibi wireshark ‘ta ip adresi filtrelemesini kullanarak saldırganın NBT-NS protokol isteği gerçekleştiren kullanıcıya cevap paketini görebiliriz.
+</p>
+
+<br></br>
+<img src="/img2/llmnr3.png" align="middle" width="800px" height="110px">
+
+<br></br>
+<p>
+Paket içeriğini inceleme altına aldığımızda aşağıdaki gibi bir sonuç ile karşılaşırız.Bu sonuca göre UDP/137 numaralı port’tan gönderilen(NBT-NS UDP/137 Kullanır) cevap içeriğinde aranılan tuygun.la adresinin kendisi olduğunu ve ip adresinin 192.168.235.142 olduğunu göndermiş bulunmakta.
+</p>
+
+
+<br></br>
+
+<img src="/img2/llmnr4.png" align="middle" width="800px" height="300px">
+
+<br></br>
+<p>
+Bu analizin ardından kullanıcı’nın saldırgana gönderdiği doğrulama sonuç değerine göz atalım.
+</p>
+
+<br></br>
+
+<img src="/img2/llmnr5.png" align="middle" width="800px" height="110px">
+<br></br>
+
+<p>
+Seçilen bu paketi incelediğimizde Responder taradından elde edilen tüm challenge değerlerini görebiliyoruz.
+</p>
+
+<br></br>
+
+<img src="/img2/llmnr6.png" align="middle" width="800px" height="250px">
+
+<br></br>
+
+<br></br>
+</html>

@@ -1,0 +1,136 @@
+<!Doctype html>
+<html>
+	<title>AKTIF BILGI TOPLAMA</title>
+	<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                    <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    
+                    <li><a href="Metasploit_Framework_usage.html">Metasploit Framework</a></li>
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>Aktif Bilgi Toplama</h1>
+
+		     <br></br>
+	<br></br>
+	<h3><p class="x">Ağda bulunan cihazların Tespiti
+	 <br></br><br></br>
+	 	<img src="/img1/aktif1.png" align="middle" width="600px" height="300px">
+
+	 </p></h3>
+	<p class="x">İlk önce sistemimiz’in kullandığı eth0 interface’imiz hakkında bilgi almak için ifconfig komutunu kullanarak bu işlemi gerçekleştiriyoruz.
+Burada elde etmek istediğimiz öncelikli bilgilerden bir tanesi subnet mask adresimiz dir bu adres sayesinde ipv4 adresimizin kullanıcılara tanımlı olan oktet ve prefix uzunluğunu hesaplayarak lan içerisinde bir arp sorgusu gerçekleştirip aktif cihazları tespit etmiş olucaz.
+</p>
+<p class="x">
+Subnet mask adresimiz ‘255.255.255.0’ şeklindedir, buda demek oluyorki lan içerisinde kullanılan ipv4 adresimizin ilk üç okteti network , son okteti de kullanıcılara  tanımlanmış ve bizde buradan yola çıkarak prefix uzunluğumuzu hesaplayabiliriz.
+Bu hesaplama sonucunda bulunan sonuç 24 bit’tir.
+<br></br><br></br>
+<img src="/img1/aktif2.png" align="middle" width="600px" height="300px">
+</p>
+	<p class="x">
+	Daha sonra yukarıdaki ekran görüntüsünde görüldüğü gibi arp-scan aracımız ile ağımızdaki cihazların tespiti için arp sorgusunun yapılacağı subnet adresimizi ‘172.16.122.0/24’ ekliyoruz.
+Bunu gerçekleştirirken LAN içerisinide aslında bir broascast mac yayını yapıldı bu yayını gerçekleştirilirken veri bağlantı katmanı üzerinden ‘ff:ff:ff:ff:ff:ff’ gibi bir adres ile tüm lan içerisinde frame’ler gönderilerek
+gerçekleşti ve cevap veren cihazların mac adresleri arp ile çözümlenip  bu sayede ağımızdaki cihazları ve ip adreslerini tespit etmiş olduk.
+Ayrıca gateway adresimi’zi route -n opsiyonu ile kontrol ettik.
+	</p>
+	<h3><p class="x">                 İşletim Sistemleri Tespiti </p></h3>
+	<p class="x">Ağ üzerinde bulunan cihazlarımızın işletim sistemleri’nin tespiti ve hakkında bilgi toplamak için son derece gelişmiş olan nmap aracımızı kullanarak yapabiliriz.</p>
+	<p class="x">#nmap -O 172.16.122.0/24</p>
+<p class="x">Yukarıdaki nmap komutunu -O opsiyonu ile hedef ağ içersinde çalışan cihazların kullandığı işletim sistemini tespit etmek için kullanılır.</p>
+<p class="x">Bu işlem gerçekleştikten sonra ağ içerisinde gateway adresimiz ve sanal makinaya bağlı olan adresler dışında iki cihazımızın kullandığı işletim sistemleri aşağıdaki ekran görüntüleri ile gösterilmiştir.</p>
+<p class="x">
+<img src="/img1/aktif3.png" align="middle" width="600px" height="200px">
+
+</p>
+<p class="x">Yukarıdaki ekran görüntüsüne bakılacak olursa bu cihazımız ‘172.16.122.130’ ip adresine sahip olan ve linux tabanlı ve linux’un 2.6.9-2.6.33 versiyonları arasında kullanan bir işletim sistemi olduğu tespit edilmiştir.</p>
+
+<p class="x"><br></br>
+<img src="/img1/aktif4.png" align="middle" width="600px" height="100px">
+
+
+</p>
+<p class="x">Yukarıdaki diğer ekran görüntüsüne bakılacak olursa bu cihazımız ise ‘172.16.122.131’ ip adresine sahip olan ve windows 7 işletim sistemini kullandığı tespit edilmiştir.</p>
+
+<h3><p class="x">Çalışan Servislerin ve Versiyon bilgileri’nin Tespiti</p></h3>
+<p class="x"><br></br>
+
+<img src="/img1/aktif5.png" align="middle" width="600px" height="400px">
+
+</p>
+<p class="x">
+Yukarıdaki ekran görüntüsünde görüldüğü gibi nmap aracı kullanılarak hedef makinemiz olan linux tabanlı işletim sistemi kullanan metasploitable makinemizin çalıştırdığı servislerin versiyon’larının tespiti için -sV , --open opsiyonları kullanılarak bu işlem gerçekleştirilmiştir.</p>
+
+<p class="x">Sonucunda yukarıda gösterilen ve açık olan servislerin versiyon bilgileri gibi kritik öneme sahip bilgiler terminal ekranında gösterilmiştir.</p>
+<br></br>
+<h3><p class="x">Genel Web Zafiyetleri</p></h3>
+<p class="x">
+Hedef makinemiz olan dvwa makinası’nın genel web zafiyetlerinin tespiti için nikto aracını kullanarak gerçekleştirdik böylece hızlı bir şekilde oluşan zafiyetler hakkında bilgi aldık.
+<br></br>
+<br></br>
+<img src="/img1/aktif6.png" align="middle" width="600px" height="400px">
+
+</p>
+<p class="x">
+<img src="/img1/aktif7.png" align="middle" width="600px" height="200px">
+
+</p>
+<p class="x">
+Yukarıdaki ekran görüntülerinde görüldüğü üzere nikto aracı ile yapılan zafiyet taraması sonucunda dvwa üzerinde oluşan web zafiyetleri listelenmiştir.
+</p>
+<p class="x">
+
+Nikto aracı’nın listelemiş olduğu genel zafiyetler aşağıdaki gibi sıralayabiliriz.
+</p>
+<pre class="x">
+
+
+    • X-Frame-Options anti-clickjacking tıklama önleme mevcut değil,
+    • ‘X-XSS-Protected’ başlığının tanımlanmadığını,
+    • ‘X-Content-Type-Options’ ayarlanmadığını,
+    • cgi/ Dizini’nin bulunmadığını,
+    • dvwa/robots.txt dosyası’nın bulunduğunu,
+    • çalıştırdığı Apache /2.2.8 versiyonu’nun güncel olmadığını,
+    • izin verilen http methodlarını (GET,HEAD,POST,OPTIONS,TRACE) gibi bilgileri veriyor.
+
+
+</pre>
+
+<p class="x">Nikto OSVDB(Open source Vulnerability Database) üzerinde bulunan güvenlik  güvenlik açıklarını bu veritabanın da tanımlayan numaraları ile listelemiştir bunları da incelediğimizde şu sonuçlar sıralanmıştır;</p>
+<pre class="x">
+    • OSVDB-877: Http trace yöntemi’nin etkin olduğu ve XST(Cross Site Trace)
+      zafiyetine neden olabilir,
+    • OSVDB-3268: dvwa/config/ dizini’nin bulunduğu ve yapılandırma dosyaları’nın bulunabileceği,
+    • OSVDB-3092: dvwa/login/ dizini’nin bulunduğu,
+    • OSVDB-3268: dvwa/docs/ dizini’nin bulunduğu,
+    • OSVDB-3092: dvwa/CHANGELOG.txt gibi bir log dosyası’nın bulunduğu,
+
+    • Ayrıca admin giriş sayfası olan dvwa/login.php dosyası’nın belirtilen yolda bulunduğu tespit edilmiştir.</pre>
+
+                     
+</div>
+</html>

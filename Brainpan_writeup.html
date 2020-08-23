@@ -1,0 +1,277 @@
+<!Doctype html>
+<html>
+	<title>BRAINPAN</title>
+<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+            		
+		    <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                  
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    <li><a href="Metasploit_Framework_usage.html">Metasploit Framework</a></li>
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+
+
+
+                    <li class="nav-divider"></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>BRAINPAN</h1>
+
+
+
+		<p class="x">
+		Öncelikle ağımızda bulunan cihazımızın ip adresi’nin tespiti için asena aracı yardımı ile listeliyoruz.Burada ‘192.168.43.1’ bizim default gateway adresimiz.
+			<br></br>
+
+				<img src="/img1/b1.png" width="700" height="350">
+			<br></br>
+			Ardından hedef sistemin üzerinde çalıştırdığı servis ve hizmetler hakkında bilgi almak için nmap aracı ile kısa bir tarama gerçekleştiriyoruz.
+			<br></br>
+						<br></br>
+				<img src="/img1/b2.png" width="700" height="550">
+			<br></br>
+			<br></br>
+
+		Nmap tarama sonucuna göre ‘10000’ numaralı port üzerinde bir python tabanlı simplehttpserver http servisinin hizmet sağladığı dikkatimizi çekiyor.Bunun için
+verilen port numarası ve host ip adresi ile tarayıcımızdan br ziyaret gerçekleştirdiğimiz de aşağıdaki ekran görüntüsünde ki sonuç ile karşılaşıyoruz.
+			<br></br>
+			<br></br>
+				<img src="/img1/b3.png" width="700" height="450">
+			<br></br>
+			<br></br>
+
+		Ardından içerisinde barındırdığı zafiyetleri taramak için nikto aracını kullanarak bir tarama işlemi gerçekleştiriyoruz ve bize aşağıdaki gibi bir sonuç ile listeleme gerçekleştiriyor.
+					<br></br>
+			<br></br>
+				<img src="/img1/b4.png" width="700" height="450">
+			<br></br>
+			<br></br>
+
+
+		Sonuçlara göre /bin dizini barındırdığı ortaya çıkıyor bu dizini tarayıcımız vasıtası ile ziyaret ettiğimiz de aşağıdaki exe uzantılı dosya ile karşılaşıyoruz.
+
+					<br></br>
+			<br></br>
+				<img src="/img1/b5.png" width="700" height="270">
+			<br></br>
+
+					<br></br>
+Bu exe dosyasını sistemimize indirip file komutu kullanarak dosya türüne baktığımızda 32 bit Intel syntax windows çalıştırılabilir dosyası olduğunu görüyoruz.
+							<br></br>
+					<br></br>
+				<img src="/img1/b6.png" width="700" height="50">
+					<br></br>
+					<br></br>
+Ardından string komutu ile dosya içerisindeki yazdırılabilir dizeleri listeliyoruz ve aşağıdaki sonuçlara baktığımızda programın bir soket bağlantı programı olduğu anlaşılıyor.
+							<br></br>
+					<br></br>
+				<img src="/img1/b7.png" width="700" height="450">
+<br></br>
+<br></br>
+Sonrasında programı bir windows 32 bit sanal lab’a gönderip ollydbg aracı kullanılarak buffer overflow saldırısı gerçekleştirip stack içerisine zararlı shell yerleştirip bir bağlantı gerçekleştirebilirmiyiz diye çalışıyoruz.
+<br></br>
+<br></br>
+Bilindiği gibi buffer overflow saldırısı programın bellek düzenini öğrenip, arabelleğin(buffer) depolayamayacağı girdileri kasıtlı olarak yürütülebilir bir shell kod yazarak bellekte çalıştırır ve bunun sonucunda programın ya da uygulamanın çalıştığı sistemde denetim sahibi olunabilir.
+		<br></br>
+
+	Öncelikle sistemimiz hangi okuma biçiminde bunu öğrenmek için aşağıdaki c++ kodunu çalıştırabiliriz.
+				<br></br>
+		<br></br>
+
+						<img src="/img1/b8.png" width="700" height="450">
+
+				<br></br>
+		<br></br>
+
+
+		Bu kodun sonucuna göre sistemimiz little endian biçiminde okuma yapıyor bunu öğrenmek bizim için hayati önem taşımaktadır.
+
+				<br></br>
+		<br></br>
+						<img src="/img1/b9.png" width="700" height="150">
+		<br></br>
+		<br></br>
+
+		Aşağıdaki ekran görüntüsünde de gözüktüğü üzere programı ollydbg aracımız ile başlatıyoruz.
+				<br></br>
+						<img src="/img1/b10.png" width="700" height="450">
+				<br></br>
+Ardından belleği taşırmak için aşağıdaki python socket kodu ile A argümanı’nı deneme amaçlı 550 adet gönderiyoruz, bunu gerçekleştirmemizin nedeni eğer bir buffer overflow zafiyet varsa eip register’ı üzerine gönderdiğimiz argümanı yazdırabiliriz.
+						<br></br>
+				<br></br>
+						<img src="/img1/b11.png" width="700" height="400">
+
+				<br></br>
+
+Bu kodu çalıştırdığımız da hedef windows makinamızda ollydbg ile çalıştırdığımız programın üzerinde eip register’ı üzerinde nasıl bir etkisi olucak görelim.
+
+				<br></br>
+				<br></br>
+Bunun sonucunda eip register’ının üzerine ‘A’ argümanını yazmayı başardık ve aşağıdaki gibi bir durum ile karşılaşıyoruz.
+				<br></br>
+				<br></br>
+						<img src="/img1/b12.png" width="700" height="400">
+				<br></br>
+				<br></br>
+Ardından bir overflow durumu artık kesinlişti şimdi yapmamız gereken bu işlemin gerçekleştiği sınırı belirlemeye kaldı.Bunu gerçekleştirmek için aşağıdaki metasploit modulunu kullanarak 1000 byte ‘lık bir pattern oluşturuyoruz ve bunu kodumuza ekliyoruz.
+				<br></br>
+				<br></br>
+						<img src="/img1/b13.png" width="700" height="210">
+				<br></br>
+				<br></br>
+
+						<img src="/img1/b14.png" width="700" height="400">
+				<br></br>
+				<br></br>
+Ardından sistemimizde program dosyasını tekrar yazdığımız kod ile çalıştırdıktan sonra aşağıdaki ekran görüntüsünde de olduğu gibi bir eip değeri elde ediyoruz.
+Eip(İnstruction pointer) registerı üzerinde durmamızın önemi bilindiği gibi bu register çalıştırılacak bir sonraki işlemin adresini tutmaktadır yani bu register’ı manipule edersek program istediğimizi yapabilir bir konuma gelir.
+				<br></br>
+				<br></br>
+						<img src="/img1/b15.png" width="700" height="400">
+				<br></br>
+				<br></br>
+Şimdi ise eip üzerine yazılmış bu değeri pattern_offsett modulu ile buffer’ın boyutunu öğreniyoruz.Bu sonuca göre buffer’ın boyutu 524 byte kadar.
+				<br></br>
+				<br></br>
+						<img src="/img1/b16.png" width="700" height="50">
+				<br></br>
+				<br></br>
+Ardından bulduğumuz bu değerin ile eip üzerine 4 adet ‘B’ argümanı göndererek eip üzerine 42424242 yazılmasını bekliyoruz eğer bu işlem beklediğimiz gibi gerçekleşirse bulduğumuz değer doğrudur.
+				<br></br>
+				<br></br>
+						<img src="/img1/b17.png" width="700" height="350">
+				<br></br>
+				<br></br>
+
+
+Bu işlemin sonucunda tam da beklediğimiz gibi eip üzerine ‘42424242’ yazdırmayı başardık.
+
+				<br></br>
+				<br></br>
+						<img src="/img1/b18.png" width="700" height="250">
+				<br></br>
+				<br></br>
+
+
+Ardından badchar dediğimiz ve bir sıralama şeklinde giden karakter dizesini bulduğumuz buffer değerine ek olarak ‘\x90’(nop hiç bir işlem yapma) komutu ile beraber gönderip akışı bozan karakterleri tespit ediyoruz.
+				<br></br>
+				<br></br>
+						<img src="/img1/b19.png" width="700" height="450">
+				<br></br>
+				<br></br>
+						<img src="/img1/b20.png" width="700" height="480">
+				<br></br>
+				<br></br>
+Bu sonuca göre gönderdiğimiz badchar’lardan akışı bozan bir karakter yok biz de genelde akışı bozan olarak kabul edilen ‘\x00’ karakterini ekliyerek msfvenom aracı ile bir shell code oluşturuyoruz.
+				<br></br>
+
+Tabi önccesinde bize stack’in yönlendirilme adresi gerekli bu sayede oluşturduğumuz shell kodu eip 524 byte’dan sonra yani taşma olayından sonra stack’i adres ile döndürüp çalıştırıcaz.
+				<br></br>
+
+Bu adresi bulmak için assembly intel syntax komutlarından olan jmp komutunun nerede esp(Stack’in üst adresini tutar) tuttuğunu öğrenip en başındaki sistemde okuma yapan little endian formatında kodumuza ekliycez.Şimdi programı ollydbg ‘da çalıştırdıktan sonra çalıştırdığı dll’ler aracılığı ile aşağıdaki adresi buluyoruz.
+				<br></br>
+				<br></br>
+						<img src="/img1/b21.png" width="700" height="350">
+				<br></br>
+				<br></br>
+Bu işlemi gerçekleştirdikten sonra ise shell kodumuzu oluşturalım.
+				<br></br>
+						<img src="/img1/b22.png" width="700" height="450">
+				<br></br>
+				<br></br>
+Burada msfvenom aracılığı ile windows/shell_reverse_tcp payload’ı kullanııp ayrıca badchar’ımız olan ‘\x00’ ve çalışıcağı sistem bilgisi de belirtilerek shell kodumuzu oluşturduk şimdi yaptığımız işlemleri kod üzerine aktaralım.
+
+				<br></br>
+				<br></br>
+						<img src="/img1/b23.png" width="720" height="450">
+				<br></br>
+				<br></br>
+Oluşturduğumuz kodu çalıştırmada önce bir netcat reverse shell bağlantısı açıyoruz bu sayede shell kodumuzda belirttiğimiz cihazımızın ip adresi ve port numarası üzerinden erişim sağlamayı planlıyoruz.
+				<br></br>
+				<br></br>
+						<img src="/img1/b24.png" width="720" height="280">
+				<br></br>
+				<br></br>
+Görüldüğü üzere işlemimiz windows labımız da başarılı bir şekilde gerçekleşti şimdi sırada brainpan hedef makinası var hatırlayacağınız üzere nmap taramasında 9999 numaralı port açıktı buda makina’da çalışan brainpan.exe dosyasının soket bağlantısı gerçekleştirdiği port numarası şimdi kodumuzda sadece bağlantı adresini brainpan hedef cihazının ki ile değiştirip çalıştırıyoruz.
+				<br></br>
+				<br></br>
+
+						<img src="/img1/b25.png" width="720" height="280">
+				<br></br>
+				<br></br>
+
+
+
+Yukarıdaki ekran görüntüsündende anlaşılacağı üzere sızma işlemini gerçekleştirdik fakat daha henüz kabuğa erişim sağlamadık bunun için öncelikle kabuk erişimi sağlayıp daha sonrasında ise msfvenom aracılığı ile oluşturulan shell dosyasını kullanarak bir reverse bağlantısı gerçekleştirip meterpreter sahneleyicisi üzerinden yetki yükseltme işlemini tamamlıycağız.
+
+				<br></br>
+				<br></br>
+						<img src="/img1/b26.png" width="720" height="180">
+				<br></br>
+				<br></br>
+
+
+Yukarıdaki gibi netcat bağlantısı üzerinden sistemde kabuk kısmına geçiyoruz ve bu sayede linux komutlarımızı çalıştırıp shell dosyamızı upload ediceiğiz.
+				<br></br>
+
+Ardından aşağıdaki ekran görüntüsünde olduğu gibi msfvenom kullanılarak runme.elf adında bir shell dosyası oluşturduk elf uzantısı olmasının nedeni linux sistemlerde çalıştırılabilir dosya formatı olmasından kaynaklı.
+				<br></br>
+				<br></br>
+
+						<img src="/img1/b27.png" width="720" height="180">
+				<br></br>
+				<br></br>
+Sonrasında ise komut satırımızda shell dosyamızın bulunduğu dizin içerisinde python ile bir httpserver açıyoruz ardından wget komutu ile bu bağlantıdan istediğimiz shell dosyasını hedef cihaza aktarıyoruz ve çalıştırma izni veriyoruz.
+
+				<br></br>
+				<br></br>
+						<img src="/img1/b28.png" width="720" height="180">
+
+				<br></br>
+				<br></br>
+
+
+
+Sonrasında çalıştırdığımızda aşağıdaki ekran görüntüsündeki gibi dinlemekte olan multi handler modulumuzde meterpreter üzerinden bağlantı gerçekleştirdik ve kabuğa geçmek için shell komutunu kullandık.
+Burada yetki yükseltme işlemi için öncelikle sudo’yu -l opsiyonu ile çalıştırıp kullanıcı ayrıcaliklerı hakkında bilgi almaya çalıştık ve sonuç olarak görüntüdeki gibi home/anansi/bin/anansi_util dosya yolunda (nopasswd) yani bir parola sorulmadan işlem yapabileceğimizi gördük.
+				<br></br>
+				<br></br>
+						<img src="/img1/b29.png" width="720" height="380">
+				<br></br>
+				<br></br>
+Bunu istismar edebilmek için sudo ile bu dosya yolunu ekleyerek çalıştırdık ve aşağıdaki görüntüdeki gibi bu dosyada network komutlarını çalıştırabileceğimizi fark ettim ve python ile bir ‘tty’ üreterek manual opsiyonu ile ifconfig komutunu çalıştırdım, aksi takdirde yani bir tty üretmediğimiz de bu işlem manual çalıştırıp çıkış gerçekleştirecektir. Sonrasında ise ‘!/bin/sh’ ekleyip kabuğa root olarak erişim sağladık.
+				<br></br>
+				<br></br>
+										<img src="/img1/b30.png" width="720" height="380">
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+
+
+		</p>
+                     
+</div>
+</html>

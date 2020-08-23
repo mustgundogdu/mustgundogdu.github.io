@@ -1,0 +1,155 @@
+<!Doctype html>
+<html>
+	<title>PWNLAB</title>
+	<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                    <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    <li><a href="Metasploit_Framework_usage.html">Metasploit Framework</a></li>
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>PWNLAB</h1>
+
+		      <p class="x">
+			<br></br>
+			<br></br>
+        Öncelikle Makinamızın ip adresini tespit etmek için netdiscover ile ağımızdaki aktif makinaları tarıyoruz.
+        <br></br>
+		<img src="/img/p1.png" width="700" height="250">
+		<br></br>
+		<br></br>
+		Ardından gateway adresimiz ve kendimize ait olan adreslerin dışındaki ‘192.168.2.167’ ip adresi ‘ni tespit ettikten sonra bir nmap taraması ile kullandığı servis ve port’lar hakkında bilgi oluyoruz.
+		<br></br>
+		<br></br>
+		<img src="/img/p2.png" width="700" height="470">
+		<br></br>
+		<br></br>
+		Yukarıdaki ekran görüntüsünde de göründüğü gibi çalışan servisleri listeledik.
+         Bunun yanında çalıştırdığı http servisi için nikto aracı ile tarama gerçekleştirdik.
+			<br></br>
+			<br></br>
+					<img src="/img/p3.png" width="700" height="470">
+<br></br>
+Nikto ile ağ içerisinde bulunan cihazımızı taradığımızda bize yukarıdaki çıktıyı veriyor. Ardından ise hedef sistemin adresini tarayıcımız da görüntülediğimiz de ve upload alanına tıkladığımızda araç çubuğundaki sorgu dikkatimizi çekiyor.
+<br></br>
+<br></br>
+
+							<img src="/img/p4.png" width="700" height="470">
+<br></br>
+<br></br>
+Burada ilk düşündüğüm bu sorguyu gerçekleştirirken bir LFI(Local File Inclusion) zafiyeti’nin oluşabileceği bilindiği üzere bu zafiyet’sunucu üzerinde ki bazı kritik dosyaların okunmasına hatta bu RFI(Remote File Inclusion) ile uzaktan kod çalıştırma’ya neden olabilir.
+<br></br>
+Bundan ötürü hedef sistemdeki kullanılan php dosyalarının keşfi kritik önem taşır bu yüzden nikto’nun bulduğu bazı php dosyaları’nın yanında farklı dosyalar olabilir mi diye dirbuster aracı kullanarak bir tarama gerçekleştiriyoruz.
+<br></br>
+
+								<img src="/img/p5.png" width="700" height="470">
+
+		<br></br>
+		<br></br>
+		Daha sonrasında dirbuster’ın bulduğu sonuçlara göz attığımız da nikto ‘nun bulduğu sonuçlardan farklı olarak upload.php ve index.php dosyalarını görüyoruz .
+
+		<br></br>
+		<br></br>
+										<img src="/img/p6.png" width="700" height="320">
+<br></br>
+<br></br>
+Ardından bazı LFI payload’larını denemek için küçük bir python scripti yazdım.Bu script sayesinde payload’lar sırasıyla denenerek sonuç döndürülmeye çalışıldı.
+<br></br>
+
+												<img src="/img/p7.png" width="700" height="450">
+
+		<br></br>
+		<br></br>
+		Burada ki ana mantık payload listesindeki lfi payload’ların request modulu sayesinde denenip anında terminal ekranında bastırmaktır.
+		<br></br>
+		Scriptimizi çalıştırdığımızda aşağıdaki sonuçlar ile karşılaşıyoruz.
+		<br></br>
+														<img src="/img/p8.png" width="850" height="450">
+<br></br>
+<br></br>
+												<img src="/img/p9.png" width="800" height="350">
+												<br></br>
+
+												<img src="/img/p10.png" width="800" height="250">
+<br></br>
+
+												<img src="/img/p11.png" width="800" height="250">
+<br></br>
+
+												<img src="/img/p12.png" width="800" height="250">
+
+		<br></br>
+		<br></br>
+		Yukarıda ki ekran görüntülerinde de gözüktüğü üzere config.php ve index.php için eklediğimiz lfi payloadlarımız çalıştı ve ekranda tam da istediğimiz gibi dosya içeriklerini base64 formatında yansıttı geriye sadece bunları decode işlemine tabi tutmamız gerekiyor.
+		<br></br>
+Aşağıdaki ekran görüntüsündeki gibi terminal ekranı üzerinde echo komutu ile config.php dosyası’nın içeriğini base64 formatından decode işlemini gerçekleştiriyoruz ve sunucu üzerinde çalışan mysql veritabanı’na ait bağlantı bilgileri karşımıza geliyor.
+		<br></br>
+		<br></br>
+												<img src="/img/p13.png" width="800" height="200">
+
+		<br></br>
+		<br></br>
+		Şimdi tek yapmamız gereken bir uzak mysql bağlantısı.Bunun içinde aşağıdaki adımları takip ediyoruz.
+		<br></br>
+														<img src="/img/p14.png" width="700" height="300">
+<br></br>
+<br></br>
+Yukarıdaki ekran görüntüsünde de görüldüğü üzere sırası ile ‘show databases;’ ve ‘use Users;’ komutlarını kullanarak erişim sağladığımız mysql sunucusunda Users isimli veritabanı’nı seçiyoruz.
+<br></br>
+<br></br>
+														<img src="/img/p15.png" width="700" height="485">
+<br></br>
+<br></br>
+Ardından seçmiş olduğumuz Users veritabanı içerisindeki tabloları listelemek için ‘show tables;’ komutunu kullanarak tablomuz üzerindeki sütunları görmek için ‘select * from users;’ sorgusunu yazarak görselde de gözüktüğü üzere listeliyoruz.Burada yine kullanıcı parolaları base64 ile format değiştirildiği anlaşılıyor yapmamız gereken sadece decode işlemini gerçekleştirmek.
+<br></br>
+Config dosyasında bulduğumuz sonuçların ardından index.php ve upload.php dosyalarını’da decode işlemine tabi tutuyoruz.
+<br></br>
+														<img src="/img/p16.png" width="800" height="550">
+<br></br>
+<br></br>
+														<img src="/img/p17.png" width="800" height="650">
+<br></br>
+Decode işlemlerini gerçekleştirdikten sonra yukarıdaki ekran görüntülüründe de gözüktüğü gibi bizi dosyalardaki php kodları karşılıyor.
+<br></br>
+İlk decode işlemine tabi tutmuş olduğumuz index.php dosyasının kodlarını incelediğimiz’de  lang.php dosyasına Cookie verilerini aktardığını görüyoruz.
+<br></br>
+														<img src="/img/p18.png" width="800" height="450">
+<br></br>
+<br></br>
+Ardından bunu kullanarak burp suite’de gerekli cookie parametresi üzerine bir lfi payload’ı yerleştirip çalıştırıyoruz ve passwd dosyasına erişim sağlıyoruz.
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
+        </p>
+                     
+</div>
+</html>

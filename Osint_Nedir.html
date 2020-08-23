@@ -1,0 +1,410 @@
+<!Doctype html>
+<html>
+	<title>OSINT</title>
+<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                     <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    <li><a href="Metasploit_Framework_usage.html">Metasploit Framework</a></li>
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>OSINT</h1>
+
+		     <p class="x">
+Bilgi birçok kaynaktan daha fazla erişilebilir hale geldikçe bu bilgileri kullanarak hedef sistem’e veya kuruma yapılan saldırıların başarıya ulaşma olasılığı da artmaktadır nedeni ise çok açıktır eğer hedefi ne kadar iyi biliyorsam o zaman zafer kaçınılmazdır.
+</p>
+<br></br>
+
+<p class="x">
+  Gelelim Açık kaynak istihbaratına (Open Source Intelligence) .
+OSINT public olan alanlardan çeşitli araçlar veya teknikler vasıtası ile elde edilen bilgilerdir ve bu kavram penetrasyon testinin’de ilk adımını oluşturan bilgi toplama evresinde kullanılmaktadır.Bu sayede hedef sistem veya kurum ile doğrudan bağlantıya geçilmeden bile elde edilen istihbarat ışığında sistemin zafiyetlerinin nokta atışı tespit edilmesini sağlar.Bu işlemler gerçekleşirken bilgi toplama aşamalarından olan pasif bilgi toplama aşaması içerisinde yer alır çünkü bilgi toplamak için kullanılan araçlar veya teknikler halka açık olarak nitelendirilir .
+<br></br>
+
+</p>
+
+<p class="x">Şimdi  OSINT tekniklerine ve nasıl yapıldıklarına ilk önce belki de bu işin temelini oluşturan Google hacking yönteminin nasıl gerçekleştirileceğine bakalım .</p>
+<h3><p class="x">Google Hacking</p></h3>
+<br></br>
+
+<p class="x">Bu teknik ile bilgi toplamak istediğiniz web sunucusu hakkında eğer doğru anahtar kelimeleri kullanırsanız birçok bilgi elde edersiniz.
+Öncelikle bu tekniğini kullanmak için google ‘ın filtreleme ifadelerine bakalım.</p>
+<br></br>
+
+<p class="x">*site:Bu ifade ile istenilen alan adın da sınırlandırma yapılarak daha faydalı sonuçlar döndürülecektir.
+<br></br><br></br>
+
+<img src="/img/os1.png" width="800" height="400">
+</p>
+<br></br>
+
+<p class="x">Görüldüğü üzere site opsiyonu kullanılarak belirtilen alan adına sınırlandırma getirilmiştir bunun yanında ise yardım ifadesi getirilerek alan adı içerisinde bu ifade döndürülür ve sonuçlar yansıtılır.</p>
+<br></br>
+
+<p class="x">*filetype:Bu opsiyon sayesinde  hedef site veya siteler üzerinde istenilen dosya formatı listelenebilir.</p>
+<br></br>
+<br></br>
+
+<p class="x">
+<img src="/img/os2.png" width="800" height="400">
+<br></br>
+
+</p>
+<br></br>
+
+<p class="x">
+  Burada da görüldüğü üzere araştırma yapan kişi hedef alan adı üzerinden belirtilen ifade dahilinde dosya türü pdf formatında olarak bir listeleme gerçekleştirmiştir.
+</p>
+<br></br>
+
+<p class="x">*intitle:Bu opsiyon ile de hedef web sunucusu veya sunucuların dizinleri listelenebilir.</p>
+<br></br>
+
+<p class="x">
+<br></br>
+
+<img src="/img/os3.png" width="800" height="340">
+</p>
+
+<p class="x"><br></br>Burada da yine bir alan adı kısıtlaması belirterek intitle opsiyonu ile index.of anahtar kelimesini kullanarak web sunucusunun dizinlerine erişim sağlamaya çalışıldı ve bunun sonucunda;</p>
+<br></br>
+
+<p class="x">
+
+<img src="/img/os4.png" width="800" height="200">
+<br></br>
+
+</p>
+<p class="x">Burada belirtilen dizinlere bazı tarih bilgileri ile bilgi toplama sağlandı.
+Bunun gibi birçok opsiyonu olmakla beraber daha gelişmiş aramalar yapılarak önemli zafiyetlerin tespiti çalışmalarında veya kritik öneme sahip sunucuların versiyon bilgilerinin öğrenilmesi gibi birçok faliyet yürütülebilir.
+Bu sayede yanlış konfigure edilmiş bir web sunucusunun dışarıya oldukça fazla bilgi çıkarması sonucunda kritik öneme sahip olan dosyalar okunarak sisteme sızma işlemi gerçekleştirilebilir.</p>
+<pre class="x">                intitle:"index of" service.grp</pre>
+
+<p class="x">Örnek olarak böyle bir arama sonucunda dizinler içerisindeki service.grp adında bir konfigurasyon dosyasına erişilerek sistem üzerindeki zafiyet sömürülebilir.
+Bunun sonucunda son derece kritik önemdeki robots.txt dosyasına erişim sağlayabiliriz.</p>
+
+<p class="x">
+<br></br>
+
+<img src="/img/os5.png" width="700" height="200">
+<br></br>
+
+
+
+</p>
+
+<br></br>
+
+<h3><p class="x">Shodan</p></h3>
+<br></br>
+
+<p class="x">
+Google gibi arama motorları arama yaptıkları alan olarak World Wide Web ile kısıtlıdır.Fakat Shodan Internet üzerindeki sistemler ve Iot cihazları da dahil olmak üzere bir arama motorudur diyebiliriz.Yani shodan ile Web kameraları , sunucular , akıllı Tv ‘ler , buzdolapları gibi Internet erişimine bağlı tüm cihazları bulabilirsiniz.Ayrıca hedef sistemin kullandığı teknolojileri, versiyon bilgilerini , açık olan port’larını ve bunun gibi banner bilgilerini elde ederek zafiyet tespiti dahil yapabiliriz ve bunu gerçekleştirirken çeşitli filtrelemelerinden yararlanabiliriz.
+
+</p>
+<br></br>
+
+<p class="x">
+Şimdi bir örnek ile shodan üzerinden hedef sistem hakkında gerekli olan bilgileri elde edelim.
+</p>
+<br></br>
+
+<p class="x">
+<img src="/img/os6.png" width="800" height="400">
+</p>
+<br></br>
+
+<p class="x">
+Görüldüğü üzere burada country filtresi ile arama yapmak istediğimiz ülke’yi ekleyip bunun yanında apache çalıştıran web sunucuların listesini elde ettik ve bu sayede hedefin veya hedeflerin çalıştırdığı sunucunun hangi apache versiyonunu çalıştırdığı gibi kritik öneme sahip bilgileri elde ettik.
+</p>
+<br></br>
+
+<p class="x">
+
+Biraz daha gelişmiş olarak kullanırsak daha önceden bulunmuş bir uygulama zafiyetinin versiyon bilgisi ile tarama gerçekleştirip gerekli filtreler aracılığı ile bunun kısıtlaması yapılarak hedef sistemin zafiyet tespiti sağlanabilir.
+</p>
+<p class="x">
+<br></br>
+
+<img src="/img/os7.png" width="800" height="400">
+<br></br>
+
+</p>
+<p class="x">
+Görüldüğü gibi burada webmin 1.920 versiyon ile çalışan sistemler listelenmiştir .Bu sayede hedef sistemin veya sistemlerin çalıştırdığı uygulamaların versiyonu ile zafiyet tespiti sağlanmıştır.
+</p>
+<br></br>
+
+<p class="x">
+
+<img src="/img/os8.png" width="800" height="400">
+<br></br>
+
+
+</p>
+<p class="x">
+<br></br>
+Bunun yanında yaygın olarak ip kamera tarfından kullanılan bir url yolu ve spesifik bir port numarası belirterek arama gerçekleştirdiğimizde http durum kodları ile bu aramanın ne durumda olduğunu ve erişim sağlamak için neler yapmamız gerektiğini belirleyebiliriz.
+</p>
+<br></br>
+
+<p class="x">
+<img src="/img/os9.png" width="800" height="400">
+<br></br>
+
+
+</p>
+
+
+
+<br></br>
+<h3><p class="x">Dig</p></h3>
+
+<p class="x">Dig(Domain Information Groper) alan adı sunucularını sorgulayarak bir DNS araması yapan komut satırı programıdır ve dns kayıtları , zone transfer gibi kritik bilgileri elde etmek için nslookup ‘ın alternatifi olarak kullanılabilir.</p>
+
+<p class="x">Dig varsayılan olarak /etc/resolv.conf dosyasında listelenen alan adı sunucusu adresi ile çözümleme gerçekleştirir.</p>
+
+<p class="x">Burada dig komutunu hedef alan adının yanında trace opsiyonu ile belirtilerek izlenen dns yolunun bir listesi elde edilmiştir.</p>
+
+<p class="x">
+<br></br>
+
+<img src="/img/os10.png" width="800" height="400">
+<br></br>
+
+</p>
+<p class="x">Burada ise hedef alan adının mail exchange(MX) yani adresimize mail transferi gerçekleştirirken gerekli olan dns kayıtları hakkında bilgi toplanmıştır.</p>
+<br></br>
+
+<p class="x">
+<br></br>
+
+<img src="/img/os11.png" width="800" height="400">
+<br></br>
+
+</p>
+<p class="x">
+<br></br>
+
+Geriye doğru bir DNS araması yapmak için yine dig komutunu kullanabiliriz bu sayede sorgulamak istediğimiz ip adresinin işaret ettiği alan adı tespitinide gerçekleştirebiliriz.
+</p>
+<p class="x">
+<br></br>
+
+<img src="/img/os12.png" width="800" height="200">
+<br></br>
+
+</p>
+<br></br>
+
+<h3><p class="x">Maltego</p></h3>
+<br></br>
+
+<p class="x">
+Maltego ‘da hedef sistem veya sistemler hakkında bilgi edinmek için birçok hizmet ve servis sunmaktadır, bunu yaparken arama motorlorının kullanılmasının yanında sosyal ağlarda(twitter,facebook vb.) arama yaparak gereken bilgileri son kullanıcıya bir grafik arayüzü ile veri madenciliği yaparak gerçekleştirmektedir.
+
+</p>
+<br></br>
+
+<p class="x"><br></br>
+<img src="/img/os13.png" width="800" height="400">
+<br></br>
+
+</p>
+<p class="x">
+	<br></br>
+	Burada maltego aracımız kullanılarak belirtilen alan adının tüm DNS , alt alan isimleri , bağımlı kişiler ve bağımlı mail adresleri elde edilmiştir. Bunu gerçekleştirirken maltegonun grafik arayüzü gerçekten çok büyük kolaylık sağlamaktadır sadece yapmamız gereken sol sütunda hedef ile öğrenmek istediğimiz bilgi için seçim yapıp hedefi ekleyip sonrasında ise sadece sağ tıklayıp istediğimiz taramayı gerçekleştirebiliriz.
+	 </p>
+	 <p class="x">
+<br></br>
+
+	 <img src="/img/os14.png" width="800" height="400">
+<br></br>
+
+	 </p>
+
+	 <p class="x">
+	 <br></br>
+	 Aynı zamanda herhangi bir kişi için bulunabileceği web adresi ya da sosyal ağlarda yapılan filtrelemeler ile birçok bilgi sağlayabilir.
+
+	 </p>
+<br></br>
+
+	 <h3><p class="x">
+	 theHarvester
+<br></br>
+
+	 </p></h3>
+	 <p class="x">
+	  TheHarvester aracı diğer Osint araçlarında olduğu gibi çeşitli arama motorları ve bazı sosyal ağları kullanarak bilgi toplama işlemini gerçekleştirir.Bu bilgiler host adresleri, kullanıcı profilleri, mail adresleri gibi içeriklerdir.
+	 </p>
+	 <p class="x">
+<br></br>
+
+	 <br></br>
+	 	 <img src="/img/os16.png" width="800" height="400">
+<br></br>
+
+	 </p>
+
+	 <p class="x">Burada theharvester kullanılarak belirtilen alan adı için arama motorlarında bir osint çalışması yapılmıştır, bunu gerçekleştirirken -d opsiyonu ile belirtilen alan adı , -b opsiyonu ile de hangi arama motorunda arama yapılacağını belirleyebiliriz.Biz burada all ifadesini kullanarak tüm arama motorlarında arama yapması için ve -l opsiyonu sayesinde de arama esnasındaki sonuç saısını belirttik.</p>
+<br></br>
+
+	 <p class="x"><br></br>
+	 	 	 <img src="/img/os17.png" width="800" height="400">
+<br></br>
+
+	 </p>
+
+	 <p class="x">
+	 <br></br>
+	 Burada ise daha önce belirtiğimiz opsiyonların yanında -v, -n , -t, -h opsiyonları dakullanılarak daha kapsamlı bir osint çalışması yapılmaya çalışılmıştır.Bu opsiyonlar sırası ile sanal host taraması, ip aralıkları için ters DNS sorguları, üst alan adları için tarama ve shodan veritabanında bilgi edinme için kullanılmıştır.
+	 </p>
+
+	 <h3><p class="x">Recon-ng</p></h3>
+	 <p class="x">
+	 Recon-ng aracı da python ile yazılmış aynı metasploit framework gibi kullanım kolaylığı ve içerisinde barındırdığı moduller vasıtası ile Osint için geliştirilmiş harika bir komut satırı aracıdır.
+	 </p>
+	 <p class="x">
+	 <br></br>
+	 	 	 	 <img src="/img/os18.png" width="800" height="400">
+<br></br>
+
+	 </p>
+	 <p class="x">
+	 <br></br>
+	 Öncelikle workspace komutu aracılığı ile kendimize deneme adında bir çalışma alanı oluşturduk daha sonrasında ise bilgi toplamak istediğimiz alan adı adresini add komutu ile aşağıdaki gibi ekledik ve show komutu ile görüntüledik.
+	 </p>
+<p class="x">
+<br></br>
+
+	 	 	 	 <img src="/img/os19.png" width="600" height="200">
+<br></br>
+
+
+</p>
+
+<p class="x">
+Ardından recon-ng aracımızın içerisinde bulundurduğu Osint modulleri arasından mail adresleri için aşağıda belirtilen modulü kullanmak için use komutu ile çalıştırdık ve bize sadece bir tane mail adresi döndürdü.
+</p>
+
+	 <p class="x">
+	 	 	 	 	 <img src="/img/os20.png" width="600" height="250">
+
+	 </p>
+
+
+	 <h3><p class="x">
+	 Spiderfoot
+	 </p></h3>
+
+	 <p class="x">
+	 Spiderfoot ip adresleri, alan adları, mail adresleri, isimler gibi bilgileri toplamak için 100’den fazla kaynağı sorgulayan bir keşif aracıdır.Bunu gerçekleştirirken hangi modulleri kullanmasını gerektiğini ve hedefi belirtmeniz yeterli olucaktır.
+Spiderfoot bir web arayüzüde vardır bu sayede komut satırından belirtilen adres ve port’ta çalıştırabilirsiniz.
+	 </p>
+
+<p class="x"><br></br>Spiderfoot ile hedef sistem üzerinden istediğimiz bilgileri spesifik olarak modul kullanarak elde edebiliriz.Bunu gerçekleştirirken komut satırında spiderfoot dizini içerisinde sf.py dosyasını python ile çalıştırıp loopback ip adresimizde ve 5001 numaralı portu dinlemesi üzerine çalıştırıp daha sonrasında ise sfcli.py dosyasını yine komut satırı üzerinde çalıştırdığımız da ve modules komutu ile modul isimlerini ve özelliklerini listelediğimizde gerçekleştirebiliriz.</p>
+
+	 <p class="x">
+<br></br>
+
+	 	 	 	 	 	 <img src="/img/os21.png" width="600" height="250">
+<br></br>
+
+	 </p>
+<p class="x">
+Burada ise bahsettiğimiz sfcli.py dosyasını python aracılığı ile çalıştırıp modules komutu ile modul listeleme işlemlerini gerçekleştirdik.
+</p>
+<p class="x">
+<br></br>
+
+	 	 	 	 	 	 <img src="/img/os22.png" width="600" height="250">
+<br></br>
+
+
+</p>
+<p class="x">
+<br></br>Gözüktüğü -m opsiyonu ile üzere moduller arasından sfp_dnsresolve modulunu seçerek ve -s opsiyonu ile hedefi belirterek komut satırı üzerinden çalıştırdığımızda modulun işlevinde belirtildiği gibi tanımlanan ana bilgisayarları ve ip adreslerini çözümlemeye çalışmıştır.
+</p>
+
+<p class="x">
+<br></br>
+
+	 	 	 	 	 	 <img src="/img/os23.png" width="800" height="400">
+<br></br>
+
+</p>
+
+
+<p class="x">
+<br></br>
+
+	 	 	 	 	 	 <img src="/img/os24.png" width="800" height="400">
+
+<br></br>
+
+</p>
+
+
+<p class="x">
+	<br></br>
+Görüldüğü üzere burada hedef alan adına -t opsiyonu ile mail adresleri tespiti için kendine ait olan bir modul,  -f ve -x ile doğrudan hedef ile gerekli olan modul aracılığı filtreleme ve -q ile de kayıt tutma devre dışı kılınmıştır.
+</p>
+<h3><p class="x">
+Photon
+
+</p></h3>
+
+<p class="x">
+Photon’un Osint araçları arasında en dikkat çeken özelliklerinden bir tanesi görsel bir DNS haritası oluşturmasıdır,bu hedefteki alan adının ne tür bir yazılımın çalıştığına dair fikir verebilir.
+</p>
+
+<p class="x">
+<br></br>
+
+	 	 	 	 	 	 <img src="/img/os25.png" width="800" height="400">
+<br></br>
+
+</p>
+
+
+<p class="x">
+Burada -u opsiyonu ile hedef alan adı belirtilmiş ve –dns opsiyonu ile de alt alan adı ve dns verileri için kullanılmıştır.
+Tarama bittiğinde alan adı için bir dizin oluşturulmuş ve içerisinde bahsettiğimiz DNS haritalandırması yer almıştır.
+</p>
+<br></br>
+
+<p class="x">
+	 	 	 	 	 	 <img src="/img/os26.png" width="800" height="400">
+<br></br>
+
+</p>
+
+<p class="x">
+<br></br>
+</p>
+                     
+</div>
+</html>

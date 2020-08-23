@@ -1,0 +1,174 @@
+<!Doctype html>
+<html>
+	<title>KIOPTRIX</title>
+	<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                     <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                   
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    <li><a href="Metasploit_Framework_usage.html">Metasploit Framework</a></li>
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+                    <li class="nav-divider"></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>KIOPTRIX </h1>
+		      <p class="x">
+		   <br></br>
+
+       Öncelikle Köprü bağlantısı gerçekleştirerek iletişim kurduğumuz hedef cihazımız kioptrix makinasının ip adresini çözümlemek için asena aracını kullanarak ağ üzerinde bir tarama gerçekleştiriyoruz.
+<br></br>
+
+       <img src="/img1/k1.png" align="middle" width="700px" height="370px">
+<br></br>
+Burada ‘192.168.43.1’ ip adresimiz bizim default gateway adresimizdir, siğer ip adresi ise kioptrix makinasına ait olan ip adresi.
+<br></br>
+Ardından bir nmap taraması gerçekleştirip açık olan port numaralarını ve üzerinde çalışan servislerin versiyon bilgileri ile listeliyoruz.
+<br></br>
+<br></br>
+
+       <img src="/img1/k2.png" align="middle" width="700px" height="300px">
+<br></br>
+
+     <br></br>
+     Görüldüğü üzere çalışan servisler listelendi ve dikkatimizi ilk olarak 139 port numarasında çalışan ve smbe protokolünü kullanan samba servisi çekiyor bunun için metasploit üzerinde versiyon bilgisini tam olarak öğrenebileceğimiz bir auxiliary modul kullanabiliriz.
+     <br></br>
+     <br></br>
+            <img src="/img1/k3.png" align="middle" width="700px" height="300px">
+<br></br>
+
+<br></br>
+Bunun için yukarıda gözüktüğü gibi metasploit üzerinde bir arama gerçekleştirdik bu arama sonucunda versiyon bilgisini öğrenebilmemiz açısından auxiliary modulumuz listelendi daha sonra gerekli ayarları aşağıdaki gibi ekleyerek modulumuzu çalıştırdık.
+<br></br>
+
+       <br></br>
+                   <img src="/img1/k4.png" align="middle" width="740px" height="340px">
+		<br></br>
+		<br></br>
+		Bunun sonucunda yukarıdaki görselde de gözüktüğü üzere ‘Samba 2.2.1a’ versiyon bilgisi gösteriliyor bu versiyon bilgisi ele alınarak araştırıldığında cve-2003-0201 id ‘sine sahip bir kritik buffer overflow zafiyeti tespit edildi.
+		<br></br>
+<br></br>
+
+                          <img src="/img1/k5.png" align="middle" width="740px" height="340px">
+
+       <br></br>
+       <br></br>
+       Ardından bu zafiyet için geliştirilen ve hedef sistemimiz olan linux tabanlı kioptrix makinamız da işimize yarayabilecek olan ‘linux/samba/trans2open’ exploit modulunu aşağıdaki ekran görüntüsünde olduğu gibi eklemeleri yapıb çalıştırıyoruz.
+<br></br>
+
+       <br></br>
+                                 <img src="/img1/k6.png" align="middle" width="740px" height="340px">
+<br></br>
+Burada bir bind_tcp payload ekleyerek hedef sistemde açılan komut satırı arayüzünü aşağıdaki ekran görüntüsünde olduğu gibi başarılı bir şekilde görüntüledik ve yetki yükseltme işlemine gerek kalmadan gerçekleştirdik.
+<br></br>
+<br></br>
+
+                                 <img src="/img1/k7.png" align="middle" width="740px" height="240px">
+<br></br>
+<br></br>
+Daha sonra ise apache ile sağladığı web hizmetinde bir dizin ve dosya taraması yapmak için dirbuster aracını aşağıdaki gibi wordlist eklemesi yaptıktan sonra çalıştırdık.
+<br></br>
+
+<br></br>
+                                 <img src="/img1/k8.png" align="middle" width="740px" height="380px">
+<br></br>
+<br></br>
+Bu tarama sonucunda ise aşağıdaki ekran görüntülerinde ki dosylar ve dizinler tespit edilmiştir.
+
+<br></br><br></br>
+                                 <img src="/img1/k9.png" align="middle" width="740px" height="380px">
+
+<br></br>
+<br></br>
+                                 <img src="/img1/k10.png" align="middle" width="740px" height="170px">
+<br></br>
+
+<br></br>
+Sıralanmış bu dosyalardan usage_200909.html dosyasını izlediğimizde bunun gibi bit istatiksel bilgi veriyor.
+<br></br>
+<br></br>
+
+                                 <img src="/img1/k11.png" align="middle" width="740px" height="420px">
+<br></br>
+<br></br>
+Bunun gibi sisteme ait bazı bilgiler dışarı çıkaran ve çalıştırdığı işlem hakkında birçok bilgi veren dosyaya ulaşabiliyoruz.
+<br></br>
+<br></br>
+<br></br>
+
+Ardından 80, 443 numaralı portlarda çalıştırdığı ve openssl ile hizmet sağladığı
+bilgisinden ve ayrıca nmap taramasın’da elde ettiğimiz apache versiyonu ile ilgili bir zafiyet ve modul taraması yapıyoruz.
+<br></br>
+<br></br>
+
+                                 <img src="/img1/k12.png" align="middle" width="740px" height="420px">
+
+<br></br>
+<br></br>
+Bulunan bu zafiyet ile ilgili exploitdb veritabanında searchsploit ile bir tarama gerçekleştiriyoruz ve tam da yukarıdaki zafiyet türüne uygun bir buffer overflow exploit modulunu buluyoruz.
+<br></br>
+<br></br>
+
+
+                                 <img src="/img1/k13.png" align="middle" width="740px" height="240px">
+<br></br>
+
+<br></br>
+Daha sonrasında ise seçilen exploit’in derleme talimatına göre gcc ile şu komut kullanarak derlenmiştir.
+<br></br>
+#gcc -o OpenFuck -764.c -lcrypto
+<br></br>
+Bu derleme için ‘libssl-dev’ sistemde yüklü olması gerekmektedir.Bunu yğkledikten sonra da derlenmiş olan kodu çalıştırıp(‘./OpenFuck’) söylenildiği gibi sistemimize uygun buf değerini bulduk.
+<br></br>
+<br></br>
+
+
+                                 <img src="/img1/k14.png" align="middle" width="740px" height="250px">
+<br></br>
+
+<br></br>
+Ardından bu buf değerini ve connection değerini ekleyerek çalıştırdık.Yine bir yetki yükseltme işlemi gerçekleştirmemize gerek kalmadan sisteme giriş yaptık.
+<br></br>
+<br></br>
+
+                                 <img src="/img1/k15.png" align="middle" width="740px" height="550px">
+<br></br>
+<br></br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+       </p>
+                     
+</div>
+</html>

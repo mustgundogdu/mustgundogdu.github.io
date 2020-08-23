@@ -1,0 +1,117 @@
+<!Doctype html>
+<html>
+	<title>METASPLOIT FRAMEWORK</title>
+	<meta charset="UTF-8">
+        <link href="css/style.css">
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+     <div id="blog" class="row">
+
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                    <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    
+                    <li><a href="Temel_Network.html">Temel Network</a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+
+
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>METASPLOIT FRAMEWORK</h1>
+
+		     <p class="x">Metasploit framework sızma testlerinde exploit,auxiliary,payload gibi içerikler barındıran ve kullanıcıya harika bir arayüz sağlayan gelişmiş bir platformdur.</p>
+<p class="x"><br></br>
+<img src="/img1/m1.png" align="middle" width="800px" height="500px">
+
+</p>
+<p class="x">Metasploit kendine özgü komutları sayesinde çok daha iyi bir kullanım sağlar,bu komutlardan bazıları aşağıda sıralanmıştır.</p>
+<p class="x">İlk olarak Check komutu ne işe yarar bunu inceleyelim,metasploit’de check komutu
+kullanılan exploit’in hedef sistemde işe yarayıp yaramadığını kontrol eder.</p>
+
+<p class="x">
+<img src="/img1/m2.png" align="middle" width="800px" height="500px">
+
+</p>
+
+<p class="x">Örnek olarak yukarıda apache tomcat zafiyeti için bir exploit use komutu ile metasploit framework’te kullanılmak için seçilmiştir.daha sonra gerekli ayarlar set komutu ile eklenip işe yarama kontrolü açısından check komutu ile kontrol edilmeye çalışılmıştır ve ekranda dönen cevap ise bunun işe yarayamayacağı üzerinedir.</p>
+
+<p class="x">Connect komutu ise bize metasploit sayesinde bir port numarası ve ip adresi ekleyerek netcat ya da telnet bağlantısı sunar.</p>
+<p class="x">
+<img src="/img1/m3.png" align="middle" width="500px" height="300px">
+</p>
+
+<p class="x">Yukarıda karşı sistem ile bir netcat bind shell bağlantısı ile bağlantı metasploit framework aracılığı gerçekleşmiştir.</p>
+<p class="x">Aynı zamanda metasploit içerisindeki modulleri spesifik bir arama yaparak daha rahat bir şekilde bulabiliriz.</p>
+
+<p class="x">
+
+	<img src="/img1/m5.png" align="middle" width="700px" height="400px">
+</p>
+
+<p class="x">
+Yukarıdaki ekran görüntüsünde olduğu gibi search komutunun yanında name ve type opsiyonları kullanılarak mysql ile ilgili exploitler ekranda gösterilmiştir.
+Bu komutu biraz daha gelişmiş olarak kullanırsak aşağıdaki gibi istediğimiz platformu, modul yazarını ve zafiyet tarihi ile arama yapabiliriz.
+</p>
+
+<p class="x">
+	<img src="/img/m6.png" align="middle" width="700px" height="300px">
+
+
+</p>
+
+<p class="x">
+Bunların yanında metasploit framework aracımızı nmap gibi gelişmiş araçlar ile kullanabilir ve daha öncesinde taranmış olan bir xml dosyasını içe aktarıp metaslpoit üzerinde’de taram işlemini gerçekleştirebiliriz.
+</p>
+<p class="x">
+	<img src="/img/m7.png" align="middle" width="700px" height="300px">
+
+</p>
+<p class="x">Yukarıdaki ekran görüntüsünde öncelikle db_status komutu ile postgresql veritabanı bağlantısı kontrol edilmiştir,daha sonrasında ise ‘msfu’ adında bir çalışma alanı workspace -a opsiyonu ile oluşturulmuş ve  ardından /root/Desktop/
+dizini altındaki sonuc.xml dosyası db_import komutu ile içe aktarılıp db_nmap komutu ile hedef sistem -A opsiyonu(işletim sistemi algılama, sürüm algılama,komut dosyası tarama) ile tarama gerçekleştirilmiştir.</p>
+<p class="x">Ayrıca Metasploit’in bize sunduğu diğer bilgi alma komutları aramalarımızı daha zengin ve etkili bir şekilde gerçekleştirebiliriz.</p>
+
+<p class="x">
+	<img src="/img/m8.png" align="middle" width="700px" height="300px">
+
+</p>
+
+<p class="x">Yukarıdaki ekran görüntüsünde ise veritabanında ekli olan cihaz hakkında bilgi almak için hosts komutunu -c opsiyonu ile address sütunu’nu göstermesini, -S opsiyonu ile addres ile eşleşen belirli bir ifadeyi yani ‘windows’ ifadesini arama yaptık ve sonuçlar ekranda gösterildi. </p>
+<p class="x">Ardından service komutunu kullanarak daha öncesinde ‘192.168.2.158’ ip adresine sahip cihazın veritabanına kaydedilmiş olan servis bilgisine erişim sağlamak için services komutunu -c opsiyonu ile ‘name’ ve ’info’ sütunları hakkında bilgi almak için kullandık.</p>
+
+<p class="x">Eğer metasploit framework veritabınanı’na içerisinde bulunmayan bir exploit yada diğer modullerden birini eklemek istediğimiz de bunu yapmak için ise aşağıdaki yöntemi izleyebiliriz.</p>
+
+<p class="x"><br></br>
+	<img src="/img/m9.png" align="middle" width="700px" height="100px">
+
+
+</p>
+<p class="x"><br></br>
+	<img src="/img/m10.png" align="middle" width="700px" height="300px">
+
+</p>
+<p class="x">
+	<br></br><br></br>
+Burada öncelikle indirilen exploit ismi webmin1910 olarak değiştirilip metasploit içerisine modul olarak eklenmesi için /root/.msf4/modules/exploits/
+yolu izlenip daha önceden oluşturmuş olduğum cgi/webapps dizini’nin altına kopyalanmıştır , sonrasında ise updatedb komutu ile sistemdeki dosya ve dizinler için güncelleme sağlanarak metasploit framework çalıştırılmış ve belirtilen yoldaki exploit kullanılmıştır.
+</p>
+<p><br></br><br></br></p>
+                     
+</div>
+</html>

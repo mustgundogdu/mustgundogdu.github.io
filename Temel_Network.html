@@ -1,0 +1,349 @@
+<!Doctype html>
+<html>
+	<title>TEMEL NETWORK</title>
+<meta charset="UTF-8">
+	<link href="css/style.css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+     <div id="blog" class="row"> 
+                
+                  <div class="col-sm-2 paddingTop20">
+            <nav class="nav-sidebar">
+                <ul class="nav">
+                    <li class="active"><a href="javascript:;"><span class="glyphicon glyphicon-star"></span> Diğer Yazılar</a></li>
+                    <li><a href="Osint_Nedir.html">Osint</a></li>
+                    <li><a href="Metasploitable2_writeup.html">Metasploitable 2</a></li>
+                    <li><a href="Brainpan_writeup.html">Brainpan</a></li>
+                    <li><a href="ntlm_llmnr.html">NTLM RELAY VE LLMNR POISONING</a></li>
+                    <li><a href="Kioptrix_writeup.html">Kioptrix</a></li>
+                    <li><a href="Pwnlab_Writeup.html">Pwnlab</a></li>
+                    <li><a href="aktif_bilgi.html">Aktif Bİlgi Toplama</a></li>
+                    <li><a href="Metasploit_Framework_usage.html">Metasploit Framework</a></li>
+                    
+                    <li><a href="index.html"><i class="glyphicon glyphicon-off">AnaSayfa</i></a></li>
+                </ul>
+            </nav>
+                      <div><h2 class="add"></h2></div>
+        </div>
+                 <div class="col-md-10 blogShort">
+                     <h1>Temel Network</h1>
+                    
+                <h3><p class="x">OSI Nedir?</p></h3>
+                <br></br>
+                <p class="x">OSI (Open System Interconnection) Modeli aslında ağı anlamamız için geliştirilmiş bir modeldir ve  bu model katmanlara ayrılarak ağ içindeki cihazların haberleşmesi ve analizi için bize büyük bir avantaj sağlamaktadır.
+Şimdi OSI’nin katmanlarına bakalım.
+<br></br>
+<br></br>
+<img src="/img/osi1.png" align="middle" width="600px" height="500px">
+
+</p>
+
+<br></br>
+
+<h3><p>1.Physical Layer(Fiziksel Katman)</p></h3>
+<br></br>
+
+<p>
+Bu Katman’da Gerçekleşen olay aslında analog olan sinyali dijitale dönüştürmektir.Yani Ağ içerisin de aktarılan elektrik sinyalini bit olarak çevirip hedef cihaza iletmektir.
+Bu olay gerçekleşirken Bit senkronizasyonu,bit hız kontrolü, ağ topolojisi ve aktarım modu(Simplex, half-duplex and full-duplex) göz önüne alınır.</p>
+
+<h3><p>2.Data Link Layer(Veri Bağlantı Katmanı)</p></h3>
+<p>Veri bağlantı katmanı verileri fiziksel katman’a taşımakla görevlidir ve bunu yaparken ethernet, token ring gibi erişim yöntemleri ile çalışır. Günümüz de en çok kullanılan erişim yöntemi ethernet ‘dir.
+Kısaca veri bağlantı katmanın da veriler ağ katmanından fiziksel katmana gönderilir.Bu sırada veriler belirli parçalara bölünür bu parçalara paket veya çerçeve(frame) adı verilir.
+Veri bağlantı katmanın da ağ üzerindeki diğer bilgisayarları tanımlama ve fiziksel katmandan gelen verilerin hata kontrolü gibi hayati özellikleri yerine getirir.</p>
+<p>Veri bağlantı Katmanı iki alt bölüme ayrılır:</p>
+<p>-Media Access Control(MAC)<br></br>
+-Logical Link Control(LLC)</p>
+
+<p>Kısaca iletim şu şekilde gerçekleşir öncelikle bir çerçeve oluşturulur. Oluşturulan bu çerçeve de verinin yanın da göndericinin ve alıcının MAC adresleri çerçeve başına eklenir.Bunun yanında katmanda hata kontrolü de gerçekleştirilir, bu hasarlı ya da kayıp edilen verileri tekrar iletildiği bir mekanizmadır.</p>
+
+
+           <p>Veri hızı da aynı şekilde kontrol edilir aslında ve her iki tarafta da sabit olmalıdır.Aksi takdir de veriler bozulabilir.Ayrıca erişim kontrolü ile veri bağlantı katmanının alt katmanı olan MAC aracılığı ile tek bir kanal birden fazla cihaz tarafından paylaşıldığın da hangi zihazın kanal üzerin de kontrol sahibi olduğunu belirlemeye yardımcı olur.
+Unutulmaması gereken önemli özelliklerden bazıları veri bağlantı katmanın da pakete’ çerçeve ismi verilir.Ve bu katmanda çalışan ağ cihazlarından switchler(layer 2) Mac adreslerinden anlar kendi içerisinde bu mac adresleri bir tablo içerisinde tutar.Buna ek olarak ARP protokolü bu katman da çalışır.</p>
+                      
+             
+
+
+<h3><p>3.Network Layer(Ağ Katmanı)</p></h3>
+
+<p>Bu katmanda ki ana fikir paketin farklı bir ağa gönderileceği zaman yönlendiricinin(router) kullanacağı bilginin eklendiği katmandır.
+(bu katmanda veriler paket olarak taşınır hatırlayacağımız üzere 2.katmanda çerçeve şeklinde idi)
+Bu aşamada ağ trafiği yönlendirme gibi işlemler yapılır.Ip protokolü bu katman da çalışır.</p>
+
+<p class="x">Katmanın iki ana işlevi:</p>
+<h4><p class="x">1.Routing(Yönlendirme): </p></h4>
+<p class="x">Ağ katmanı protokolleri kaynaktan hedefe olan yolun hangisinin uygun olduğunu belirler ve bu işleme yönlendirme denir.</p>
+<h4><p class="x">2.Logical addressing(Mantıksal adresleme):</p></h4>
+<p class="x">Ağdaki her cihazı tanımlamak için ağ katmanın da bir adresleme şeması tanımlaanır.Gönderenin ve alıcının IP adresi ağ katmanına göre bir başlığa yerleştirilir.</p>
+<h3><p class="x">4.Transport Layer(Taşıma Katmanı)</p></h3>
+<p class="x">Taşıma katmanı sayesin de ağın servis kalitesi arttırılır(Quality of Service).Bunu yaparken taşıma katmanın da üst katmanlardan gelen veri ağ paketlerine bölünerek aktarım sağlanır.Bu aktarımlar TCP,UDP,Spx protokolleri vasıtası ile gerçekleşir.Verinin hata kontrolü ve karşı tarafa ulaşıp ulaşmadığı da kontrol edilir.Bu katmanda verilere segment adı verilir.Taşıma katmanı işletim sistemi tarafından çalıştırılır ve sistem çağrıları ile uygulama katmanın ile iletişimi sağlar.Yani OSI Modelinin Kalbidir diyebiliriz.Ayrıca Taşıma katmanın da segmente port bilgileri eklenir</p>
+<h3><p class="x">5.SESSION Layer(Oturum Katmanı)</p></h3>
+<p class="x">Bu katman bağlantı kurulmasından, oturumların sürdürülmesinden ve kimlik doğrulaması gibi görevlerden sorumludur.
+Burada işlemlerin bir bağlantı kurmasına ,kullanmasına ve sonlandırılması işlenir.NETBIOS , RPC ,Sockets gibi protokoller bu katmanda çalışır.</p>
+<h3><p class="x">6.PRESENTATION LAYER(SUNUM Katmanı)</p></h3>
+<p class="x">Bu katmanın en enömli görevlerinden biri ağ üzerinde iletilmesi gereken verilerin gereken formata çevrilmesidir.<br></br>Katmanın üç önemli özelliği vardır bunlar;</p>
+<p class="x">Translation : verinin ASCII formatından UNICODE çevrilmesi gibi.<br></br>
+Encryption/Decryption(Şifreleme/Şifre çözme): Bir anahtar değer kullanılarak verilerin şifrelenmesi ve çözülmesi ile bir metin formatına dönüştürülmesidir.
+<br></br>
+Compression: Verileri sıkıştırarak bit sayısının azaltılmasını gerçekleştirilir.</p>
+<h3><p class="x">7.APPLICATION Layer(UYGULAMA Katmanı)</p></h3>
+
+<p class="x">Uygulama katmanı adından da anlaşılacağı üzere ağ ile uygulama arasında bir arabirim sağlayan katmandır.Uygulama katmanı ağdan alınan verileri kullanıcıya gösterilmesi için de bir pencere sağlıyor.Bu katmanda çok kullandığımız SSH,TELNET,FTP,SMTP,SNMP,HTTP,DNS gibi ağ protokolleri çalışır.</p>
+
+<h2><p class="x">IP NEDİR ?</p></h2>
+<p class="x">IP yani Internet protokolü kısaca paketlerimizin farklı ağlar arasın da doğru adreslere ulaşabilmesi için kullanılan bir protokoldür.Örnek olarak iki tane farklı ağ düşünelim A ve B olsun.Diyelim ki biz A ağında olan bir cihazdan B Ağındaki bir cihaz ile iletişim kurmak istiyoruz o zaman göndereceğimiz paket içeriğine kendi ip adresimiz ve hedef makinanın ip adresi eklenerek yönlendirici ye iletilir ve yönlendirici de kaynak ve hedef ip bilgilerine bakarak paketin ulaşması gereken ağdaki cihaza paketi ulaştırır.</p>
+<h3><p class="x">Ipv4 ve IPv6</p></h3>
+<p class="x">  Bilindiği üzere Ipv4 32 bitten oluşur ve 4 oktet’tir, toplam da ise 4,294,967,296(2^32) Ipv4 adresi vardır ve internete çıkan cihaz sayısı Ipv4 adres sayısından çok daha fazladır bu yüzden yerel ağ içerisinde sahte Ipv4 adresleri ile haberleşiriz.Internete çıkan cihaz sayısı Ipv4 adres sayısından fazla ise nasıl olurda hepsi internete çıkabiliyor burada devreye NAT dediğimiz teknoloji giriyor böylelikle kullandığımız private ip’ler ISP’lerin bize tanımladığı tek bir public Ipv4 adresinden internet erişimini gerçekleştirebilirler.</p>
+<p class="x">Ipv4 hesaplaması :
+Ipv4 hesaplamasında subnet mask çok önemli bir yere sahiptir subnet mask’imiz bize hangi subnet’te olduğumuzu gösterir.Örnek olarak;</p>
+
+<p class="x"><pre class="x">IPv4                                                     Subnet Mask</pre></p>
+<p class="x"><pre class="x">192.168.2.15                                              255.255.255.0</pre></p>
+<p class="x">Burada Ip adresimiz’in ilk üç okteti network kısmı son okteti ise host yani kullanıcı sayımızı belli eden kısım olarak ele alırız çünkü subnet adresimize baktığımız da ilk üç oktetinin 255 olduğunu yani her okteti 8 bit olarak hesaplandığında;</p>
+<p class="x">11111111.11111111.11111111.00000000 şeklinde bir bit sırası elde ederiz burada dikkat edilmesi gereken nokta 0 olan kısımların host olarak ele alınması gerektiğidir yani şöyle bir subnet ele aldığımız da ;</p>
+<p class="x">11111111.11111111.11111100.00000000 Subnet adresinin hesaplanması sonucunda Subnet mask : 255.255.252.0</p>
+<p class="x">Host sayısı : 1022</p>
+<p class="x">Host sayısının hesaplanmasında ise sağdan başlayarak 0 olan bitleri 2 üzeri olarak ifade ettiğimiz de 2^10 yani 1020 sayısı elde ediliyor buna ek olarak broadcast ve gateway adreslerimizi de eklersek toplam da 1022 host ip adresi elde edebiliriz.</p>
+<p class="x">Ipv4 adreslerinin tükenmesi nedeni ile yetkili abilerimiz IP protokolünün altıncı versiyonuna geçmeye karar vermişlerdir. Ipv6 Ipv4 ‘e göre 128 bit ve 16 oktettir ancak Ipv6 hesaplaması Ipv4 ‘e göre oldukça karışık olduğundan hexadecimal notasyonda 8 oktet olarak gösteriliyor.</p>
+
+<p class="x"> Ipv6 kimlik denetimini ve ağdaki bilgisayarların konumlandırılmasını sağlar.
+1999:6:13:0:0:1962:2:15 – kısaltmalı olarak → 1999:6:13::1962:2:15
+IPv6 adreslemenin yanı sıra iletişim şekillerinde de ipv4 ‘e göre farklılık göstermektedir.
+Unicast:bir düğümün bir arayüzüne veerilebilir ve o arayüzü kimlik sahibi yapar.Ancak aynı arayüz birden çok ip adresine sahip olabilir.
+
+
+Anycast:Birden çok arayüze atanmış adrestir.Gönderilen ip pakati hangisine ilk önce ulaşırsa paket ona gider.
+
+Multicast:Bu adrese gönderilen bir paket adresin atanmış olduğu tüm arayüzlere iletilir.</p>
+
+<h3><p class="x">MAC ADDRESS</p></h3>
+
+<p class="x">Bir Ağ adaptörü (NIC) üretildikten sonra bir mac adresi atanır, atanan bu adres genel olarak 48 bitten oluşur.Bilgisayarınızın ağ arabirim kartına NIC(Network Interface Card) adı verilir .</p>
+<p class="x">Mac adresinin görünümü şu şekildedir;</p>
+<pre class="x">[00-14-22]-[01-23-45]
+   NIC </pre>
+<p class="x">Adresin ilk üç basamağı Ağ kartı üreticisini son üç basamağı ise benzersiz olan cihazı gösterir.Örnek olarak;</p>
+<pre class="x">Dell: 00-14-22
+Nortel: 00-04-DC
+Cisco: 00-40-96
+Belkin: 00-30-BD</pre>
+<p class="x">Bildiğiniz üzere LAN içerisin de cihazlar arası iletişim gerçekleşirken bunu MAC adresleri aracılığı ile yaparız ve MAC yukarıda bahsettiğim gibi OSI modelinin 2.katmanında(data link) çalışır.</p>
+<h3><p class="x">TCP(Transmission Control Protocol) PROTOKOLÜ</p></h3>
+<p class="x">İletim kontrol protokolü anlamına gelen TCP veri iletimi için bir ağ iletişiminin nasıl kurulacağını ve sürdürüleceğini tanımlar.
+TCP IP protokolü ile çalışır,ayrıca TCP OSI modelinde 4.katman(transport layer) ‘nında çalışır.TCP ‘nin belkide en önemli özelliği üçlü el sıkışma prensibidir(three way handshake).Bu sayede veri kontrolü diğer taşıma protokolü olan UDP ‘ye göre kat ve kat daha güvenlidir.Çalışma mantığı ise şöyledir;<br></br><br></br>
+<img src="/img/tcp.png" align="bottom" width="900px" height="400px">
+
+</p>
+
+<p class="x">cihazımızdan sunucumuza bir ilerişim gerçekleşmesi için istekte bulunduk verimiz iletilmeden önce üçlü el sıkışma gerçekleştirecektir.
+Öncelikle istemci makinemiz bir SYN isteği gönderecektir ve bu istekte bir sıra numarası(sequence number) değeri vardır.</p>
+
+<p class="x">
+Sunucu gelen bağlantıyı kabul etmeye hazır ise , sunucudan yeni bir SYN(Sunucu bağlantı kurma isteği) ve ACK(Istemciden alınan SYN için) flagleri gönderilir.
+Yani sunucudan dönen SYN ve ACK paketlerin de SYN sunucu ile istemci arasında bir başlantı oluşması için ilk sıra numarası,ACK istemciden gelen SYN paketine karşı bir onay numarası olarak döndürülmüştür.
+Son olarak ise sunucu tarafında gönderilen ACK paketine karşı istemciden SYN onay paketi döndürülmesidir ve Bağlantı kuruşmuştur.</p>
+
+<pre class="x">
+                   SYN:1 + Sequence number=101
+         --------------------------------------------------------> 
+ 
+
+Client                                                                   Server
+                               acknowledge number = 102
+                   SYN:1,ACK:1 sequence number =301
+         <-------------------------------------------------------
+
+
+
+                   SYN:0,Ack:1 acknowledge number = 302
+         --------------------------------------------------------></pre>
+         
+<h3><p class="x">UDP(User Datagram Protocol) Protokolü</p></h3>
+<p class="x">UDP protokolü TCP ‘nin aksine bir hata kontrol mekanizması olmadan veri aktarımı sağlar bu yüzden eğer veri ‘de bir kayıp meydana gelse dahi iletimi gerçekleşir.
+Yani eğer bir mesaj metnini UDP protokolü ile iletmeye çalışırsak mesajın esksiksiz bir şekilde karlı tarafa iletilip iletilmediği konusunda bir garanti söz konusu değildir.
+UDP’den bahsettiğimize göre şimdi TCP ve UDP arasındaki Farklara gelelim.</p>
+
+<pre class="x">
+      TCP                |    VS   |                 UDP
+-----------------------------------------------------------
+*TCP protokolü UDP protokolüne               *UDP protokolü TCP protokolüne göre
+göre oldukça yavaştır.                        Oldukça hızlıdır.
+
+*Gönderilen veri’nin yanında                 *Gönderilen veri’nin yanında 8 byte
+20 byte’lık bir başlık alanı var-             lık bir başlık alanı vardır.
+dır.
+
+*UDP’ye göre daha güvenli olması-            *UDP genellikle veri kaybı önemsen- 
+nedeni ile veri kaybı yaşanmaması             meyecek olan ses ve görüntü ileti-
+gereken bilgiler TCP ile aktarılır.           minde kullanılır.
+
+</pre>
+
+<h3><p class="x">ARP(Address Resolution Protocol) PROTOKOLÜ</p></h3>
+<p class="x">Bilindiği üzere LAN içerisinde iletişim için MAC adresleri hayati öneme sahiptir.Ağdaki herhangi iki cihazın haberleşebilmesi için cihazların birbirlerinin MAC adreslerini bilmesi gerekir ya da farklı ağlar arasındaki cihazlar arasındaki haberleşme için konuşucak olursak da bir cihazların birbirlerini tanıması için ARP protokolüne ihtiyaç vardır.</p>
+<p class="x">Diyelim ki LAN içerisinde iki cihaz iletişim kurmak istiyor, bunun için öncelikle birbirlerinin MAC adreslerini bilmeleri gerekli.İlk cihaz önce LAN içerisinde bir broadcast yayın yapar , bu yayın kolayca şöyle bir mac adresi adresi ile yapılır;
+FF:FF:FF:FF:FF:FF,Daha sonrasın da ise bu yayını alan cihazlar eğer iletişim kurmak isteyen cihazın hedef IP adresine sahip ise Yapılan bu arp sorgusuna cevap verir ve ilk cihazın arp tablosuna hedef cihazın mac adres bilgisi, hedef cihazın arp tablosuna da kaynak cihazın mac adresi eklenir.</p>
+
+<p class="x">Örnek olarak linux/parrot ve windows sistemlerde bakalım,
+
+Öncelikle linux sistemimiz de ping aracımızı kullanarak bir broadcast yayın yapalım ve arp tablomuza bakalım.<br></br><br></br>
+<img src="/img1/arp1.png" align="bottom" width="900px" height="400px">
+
+</p>
+<p class="x">Daha sonrasında ise windows makinemizdeki arp tablomuza bakalım. <br></br><br></br>
+<img src="/img1/arp2.png" align="bottom" width="900px" height="400px">
+
+</p>
+<br></br>
+<p class="x">Bu sayede parrot makinemizin ip adresi(192.168.2.128) windows makinemizin arp tablosuna eklendiği görüyoruz yani aslında biz adres çözümlemesi için ağ içerisinde yukarıda anlatılan ff:ff:ff:ff:ff:ff çalıştırarak ağdaki makinelerin mac adreslerini çözümledik ve artık ağ içerisinde haberleşebilir hale gelebildik.</p>
+
+<h3><p class="x">IP Konfigurasyon</p></h3>
+
+<p class="x">Öncelikle Linux sistemimizde konfigurasyonumuzun nasıl gerçekleştirebileceğimize    bakalım. <br></br><br></br>
+<img src="/img1/ipl.png" align="bottom" width="900px" height="400px">
+
+</p>
+<p class="x">İfconfig aracımızı kullanarak öncelikle statik atama yapmak istediğimiz interface’imizi seçiyoruz daha sonra ipv4 adresimizi ekleyip son olarak da subnet maskemizi ayarlıyoruz ve konfigurasyon işlemimiz gerçekleşmiş oluyor.</p>
+<p class="x">Şimdi ise windows sistemimizde bu iş nasıl oluyor ona bakalım. <br></br><br></br>
+<img src="/img1/ipw.png" align="bottom" width="900px" height="400px">
+
+</p>
+
+<p class="x">Windows ta bu işlem için biraz daha fazla ekleme yapmamız gerekiyor öncelikle hangi interface olduğunu sisteme yazıyoruz eğer çalıştığımız interface’imizi öğrenmek istiyor isek 'ipconfig' komutundan veya 'netsh interface ipv4 show config' komutlarından faydalanabiliriz.</p>
+<p class="x">Burada interface bilgimizi tırnak içinde ekledikten sonra ipv4 adresimizin static olması bilgisini de ekledikten sonra yapmamız gereken subnet maskesi ve gateway adresini eklemek kaldı ve kontrolü sağladığımızda istediğimiz bilgilerin eklenmiş olduğunu gördük.</p>
+<h3><p class="x">FTP(File Transfer protocol) PROTOKOLÜ</p></h3>
+<p class="x">FTP protokolü TCP/IP bağlantısı üzerinden dosya aktarımı için oluşturulan standart bir internet protokolüdür.FTP varsayılan olarak 21 numaralı port ile dışarı açılır.Bilindiği üzere FTP istemci-sunucu taraflı bir protokoldür ve istemci ile sunucu arasında ki dosya aktarımı olması için bazı prensipler uygulanır.</p>
+<p class="x">İstemci ile sunucu arasında bir kullanıcı adı ve parola ile doğrulama gerçekleştirilir.FTP protokolünü bir web sunucusu ile dosya paylaşımı için tarayıcımız aracılığı ile de kullanabiliriz.(ftp://username@ftp.example.com/
+)
+Ayrıca komut satırı aracılığı ile karşı sistemle bağlantıya geçebiliriz.
+</p>
+<h3><p class="x">DNS (DOMAIN NAME SYSTEM) Protokolü</p></h3>
+<p class="x">DNS ‘in  yaptığı iş aslında hayati önem taşımaktadır.
+Diyelimki mustafagundogdu.com adlı web sitesini ziyaret etmek istiyoruz bu durumda cihazımız hedef olarak belirlenen web sitesinin ip adresine bağlantı yapmak için bir istekte bulunacaktır, ama biz hedef olarak cihazımıza hedef alan ismini verdik bu durumda Cihazımız kendi LAN ağı içerisindeki veya ISP mizin bize sağladığı DNS sunucusuna DNS protokolü vasıtası ile bir sorguda bulunacaktır bu sorgudan dönen site adresi ile cihazımız  site erişimini gerçekleştirecektir.DNS sorgusu iletilirken UDP protkolü kullanılır böylece çok daha hızlı bir sorgulama gerçekleştirebiliriz ayrıca varsayılan olarak 53 numaralı UDP portunda çalışır.</p>
+
+<p class="x">   Yani bir cihazın alan isimleri ile internete erişimi için DNS protokolü vasıtası ile LAN içerisindeki veya ISP ‘nin bize tanıdığı DNS sunucusuna bir DNS  sorgusu gerçekleştirilir ve geri dönen cevap sonucunda da TCP protokolü ile web sunucusuna bağlantı gerçekleştirilir.Ayrıca DNS protokolü OSI modelin de Uygulama katmanın da http ‘ye paralel olarak çalışır.</p>
+
+
+<h3><p class="x">SSH (Secure Shell) Protokolü</p></h3>
+<p class="x">SSH protokolü uzaktan güvenli olarak oturum açma yöntemidir, bunu yaparken güçlü bir şifreleme ve veri bütünlüğünü koruma özelliği ile karşımıza çıkar.
+Genel kullanım alanları ise etkileşimli ve otamatik dosya aktarımları,uzaktan komut çalıştırma, kullanıcılar için güvenli ve otamatik bir erişim ve ağ altyapısı ve diğer bileşenlerin kontrol edilmesi gibi alanlarda kullanılır.</p>
+
+<p class="x">Varsayılan olarak 22 numaralı TCP portunda çalışır.Bunun yanında SSH protokolü de istemci-sunucu prensibi ile ortak bir anahtar ile şifreleme gerçekleştirerek çalışır.</p>
+
+<pre class="x">
+
+          İstemci sunucu’ya başvurarak bağlantı başlatır.
+       ------------------------------------------------------>
+
+         Sunucu bir public(ortak) anahtar gönderir.
+Client <-----------------------------------------------------      Server
+
+           Parametreler hesaba katılarak güvenli bir Kanal açılır. 
+        <------------------------------------------------------>
+ 
+            İstemci sunucu sisteme giriş sağlar.          
+        -------------------------------------------------------></pre>
+
+
+<h3><p class="x">HTTP(HyperText Transfer Protocol) Protokolü</p></h3>
+
+<p class="x">HTTP protokolü web üzerindeki herhangi bir veri alışverişinin temelidir ve bir istemci-sunucu protokolüdür.HTML belgeleri gibi kaynakları iletimi ile sorumludur.Ayrıca HTTP bir TCP bağlantısı üzerinden gönderilen uygulama katmanı protokolüdür.HTTP protokolü varsayılan olarak 80 numaralı portu kullanır.İstemci sunucu ile bir iletişim kurmak istediğinde aşağıdaki adımlar gerçekleşir;</p>
+
+<p class="x">Sunucu taraf ile istemci arasın da üç adet http methodu kullanılır,bunlar PUT,GET ve POST methodlarıdır.Ayrıca istemci bir http isteği başlattığında http’nin kendine ait hata kodları karşı tarafta ne gibi bir sonuc döndürüldüğü öğrenilir.</p>
+
+<p class="x">Şimdi kısaca istemci-sunucu arasında HTTP istekleri nasıl ilerler bakalım.</p>
+
+<p class="x">*TCP bağlantısı açma</p><br></br>
+<p class="x"> HTTP’nin bir TCP bağlantısı üzerinden veri gönderdiğini söylemeiştik bunun nedeni veri kaybının yaşanmaması ve daha güvenli olmasını istememizdir.</p>
+<p class="x">*HTTP mesajı gönderme</p>
+<p class="x">Bir istemci sunucu tarafına bir HTTP isteği gönderir,bu isteği GET veya POST methodu ile gönderebilir(kullanıcı adı ve parola bilgileri gibi güvenlik açısından önemli olan bilgileri POST methodu ile göndermemiz daha güvenli olur çünkü GET url ‘in bir parçası olarak veri gönderir.)</p>
+<pre class="x">GET /ornek.html HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
+Host: www.mustafagundogdu.com
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive</pre>
+<br></br>
+<p class="x">*Sunucu tarafından gönderilen bir HTTP yanıtı</p>
+<p class="x">İstemciden gelen istek iletisi yorumlandıktan sonra sunucu buna yanıt olarak bir HTTP response mesajı döndürür.</p>
+
+<pre class="x">
+POST /cgi-bin/process.cgi HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
+Host: www.mustafagundogdu.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: length
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive
+
+licenseID=string&content=string&/paramsXML=string
+</pre>
+
+<h3><p class="x">SMB (Server Message Block) Protokolü</p></h3>
+
+<p class="x">SMB protokolü ağdaki dosyalara, yazıcılara ve diğer kaynaklara erişimi paylaşmak için kullanılan bir istemci-sunucu protokolüdür, genel olarak 139 ve 445 
+numaralı portları kullanır.SMB paketlerini üç’e ayırarak sınıflandırma yapabiliriz bunlar;</p>
+<p class="x">*Oturum kontrol paketleri:Sunucu kaynakları tarafından paylaşılan bağlantıyı sağlar.</p>
+<p class="x">*Dosya erişim paketleri:Uzaktan sunucu dosya ve dizinlerine erişim  ve yönetimini sağlar.</p>
+<p class="x">*Genel mesaj paketleri: Gelen verileri yazdırma kuyruğuna gönderir.</p>
+
+<p class="x">SMB taşıma katmanı protokolü olarak çoğunlukla TCP/IP üzerinden NETBIOS ile kullanılır.(NETBIOS ağa bağlı olan aygıtların birbirleri ile haberleşmesi için kullanılan bir API’dir.)</p>
+
+<h3><p class="x">RDP (Remote Desktop Protocol) Protokolü</p></h3>
+<p class="x">RDP Microsoft tarafından geliştirilen kullanıcıya bir ağ bağlantısı üzerinden başka bir sisteme bağlanması için grafiksel arayüz sunan bir protokoldür.
+RDP sunucuları windows sistemlerde yerleşik olarak bulunur ve varsayılan olarak 3389 numaralı TCP ve 3389 numaralı UDP portunda çalışır.</p>
+
+<h3><p class="x">HTTPS (Hypertext Transfer Protocol Secure ) Protokolü </p></h3>
+
+<p class="x">Bir bakıma HTTP protokolünün daha güvenli sürümüdür diyebiliriz.HTTPS veri aktarımının güvenliğini arttırmak için şifrelenir, bu özellik ile kullanıcılar bir banka hesabına , e-posta hizmetine veya kritik başka bir hizmete giriş yapmak gibi bir işlem gerçekleştirdiğinde hassas veriler için büyük ölçüdde bir güvenlik sağlanmış olur.</p>
+
+<p class="x">Bilindiği üzere bir arpspoof saldırısı ile gerçekleştirilen saldırı türünde ağdan geçen paketlerimiz istenmeyen kişilerin eline geçebilir.Bu yüzden paketlerde bir şifreleme söz konusu değil ise (HTTP) saldırgan bizim için hassas olan kullanıcı adı ve parola gibi bilgileri ele geçirebilir.HTTPS protokolü bunun önüne geçmek için tasarlanmıştır, bu sayede ağımızda istenmeyen kişiler HTTPS protokolü ile gönderilmiş olan paketlerimize erişim sağlasa bile şifreleme gerçekleştirildiğinden paket içeriğini okumada zorluk çekecektir.</p>
+
+<p class="x">HTTPS bunu gerçekleştirirken SSL/TLS tarafından şifreleme gerçekleştirir.
+(SSL kısacası güvenli soket katmanı anlamına gelir ve veri iletimin de iki sistem arasında hassa verileri korumak ve değiştirilmesini önlemek için kendi algritmalasını kullanarak paket şifrelemesi gerçekleştirir.TLS ise onu güncellenmiş halidir.)
+</p>
+
+<h3><p class="x">NTFS (New Technology File System)</p></h3>
+<p class="x">NTFS ilk olarak Microsoft tarafından piyasaya 1993 tarihinde sürüldü ve günümüzdeki windows işletim sistemleri’nde birincil olarak kullanılmaktadır.</p>
+
+<p class="x">NTFS ‘in en büyük avantajların’dan biri hata mesajları göstermeden sabit sürücü hatalarını otamatik olarak onarır.Ayrıca sabit sürücü hatalasını log kayıtlarını tutar.Ayrıca NTFS izinleri bir dosya ve dizinin güvenliğini sağlamak için kullanılır. <br></br><br></br>
+
+
+<img src="/img/nfts.png" align="bottom" width="900px" height="400px">
+
+</p>
+
+<p class="x">Full control:Kullanıcıların dosya ve alt klasörleri okumasına, yazmasına, değiştirmesine ve silmesine izin verir.Ayrıca kullanıcılar tüm dosya ve dizinler için izin ayarlarını değiştirebilir.</p>
+<p class="x">modify:Kullanıcıların dosyaları ve alt dizinleri okumasını ve yazmasını sağlar,ayrıca klasörün silinmesine izin verir.</p>
+<p class="x">Read & execute:Kullanıcıların komut dosyaları da dahil yürütülebilir dosyaları görüntülemesine ve çalıştırmasına izin verir.</p>
+
+<p class="x">Read: Kullanıcıların dizin içeriğindeki dosyaları okumasını sağlar.</p>
+
+<p class="x">Write: Kullanıcıların dosyaları yazılabilir olarak kullanmasına izin verir.</p>
+
+
+
+
+<br></br>
+<br></br>
+
+
+
+
+
+
+
+
+
+
+		 </div>
+                  
+                 
+               <div class="col-md-12 gap10"></div>
+
+</html>
